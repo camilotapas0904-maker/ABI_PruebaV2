@@ -38,11 +38,21 @@ img.f{max-width:200px;border:1px solid var(--bd);margin-top:6px}
 .hide{display:none}
 td input{padding:6px}
 .chk{display:flex;gap:8px;align-items:center;padding:6px 0;border-top:1px solid var(--bd)}
+:root{--ol:#e67e22}
+body::before{content:"";position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 330'%3E%3Cpath d='M300 70A130 130 0 1 1 120 60' fill='none' stroke='%23ecf6e6' stroke-width='14'/%3E%3Ctext x='200' y='200' font-size='190' font-style='italic' font-weight='900' font-family='Arial Black,Arial' text-anchor='middle' fill='%23e4ebf5'%3ESEA%3C/text%3E%3Ctext x='200' y='268' font-size='30' font-weight='bold' font-family='Arial Narrow,Arial' text-anchor='middle' fill='%23e4ebf5'%3ESERVICIOS EMPRESARIALES%3C/text%3E%3Ctext x='200' y='305' font-size='30' font-weight='bold' font-family='Arial Narrow,Arial' text-anchor='middle' fill='%23e4ebf5'%3EDE ASEO S.A.S. E.S.P. B.I.C.%3C/text%3E%3C/svg%3E") no-repeat center 32%/min(440px,75vw);pointer-events:none;z-index:-1}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{opacity:.12}}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:10px 0}
+.big{position:relative;border:0;color:#fff;padding:34px 8px;font-size:22px;font-weight:300;cursor:pointer}
+.big.sm{padding:16px 8px;font-size:16px}
+.badge{position:absolute;top:-8px;right:-4px;background:var(--rd);color:#fff;border-radius:4px;font-size:13px;font-weight:700;padding:3px 7px}
+.ck{width:36px;height:36px;border:0;border-radius:4px;background:var(--rd);color:#fff;font-size:22px;font-weight:700;line-height:1}
+.ck.on{background:var(--gr)}
+.bar button{font-size:22px;padding:0 8px;color:var(--dk)}
 </style></head><body>
 <div id="login"><main><div class="card" style="margin-top:30px"><h1>Rutas de <b>recolección</b></h1>
 <label>Usuario</label><input id="lu" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><label>Clave</label><input id="lp" type="password" autocomplete="current-password">
 <button class="btn" id="lgo">INGRESAR</button><div id="lerr" class="mu" style="color:var(--rd)"></div></div></main></div>
-<div id="app" class="hide"><div class="bar"><span id="hd"></span><span>Usuario: <b id="hu"></b></span><button id="out" title="Salir">⎋</button></div><nav id="nav"></nav><main id="view"></main></div>
+<div id="app" class="hide"><div class="bar"><span id="hd"></span><span class="mu" style="text-align:center">Usuario:<br><b id="hu" style="color:var(--tx);font-size:13px"></b></span><span><button id="hm" title="Inicio">⌂</button><button id="out" title="Salir">⎋</button></span></div><main id="view"></main></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
 const $=s=>document.querySelector(s),V=h=>$("#view").innerHTML=h;
@@ -50,7 +60,7 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 const SERV=["APROVECHABLE","BIOLÓGICO","INDUSTRIAL"],ST={pendiente:"Pendiente",cerrado:"Recolectado",ausente:"Cliente ausente",no_terminado:"No terminado"},TG={cerrado:"ok",ausente:"rj",no_terminado:"nj"};
 const hoy=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 const clone=o=>JSON.parse(JSON.stringify(o)),err=e=>alert("No se pudo guardar: "+((e&&(e.message||e.code))||e));
-let D={rutas:[],clientes:[],materiales:[],conductores:[],placas:[]},S={},U=null,tab="",curId=null,ptIdx=null,signed=false,foto=null,sel=new Set(),filt="todo",fsv="",open=new Set(),dl=null,pdet=null,scr="home",draft=null;try{draft=JSON.parse(localStorage.getItem('dr')||'null')}catch(e){}const clrD=()=>{draft=null;try{localStorage.removeItem('dr')}catch(e){}};const putD=o=>{try{localStorage.setItem('dr',JSON.stringify(o))}catch(e){}};
+let D={rutas:[],clientes:[],materiales:[],conductores:[],placas:[],log:[]},S={},U=null,tab="",curId=null,ptIdx=null,signed=false,foto=null,sel=new Set(),filt="todo",fsv="",open=new Set(),dl=null,pdet=null,scr="home",draft=null;try{draft=JSON.parse(localStorage.getItem('dr')||'null')}catch(e){}const clrD=()=>{draft=null;try{localStorage.removeItem('dr')}catch(e){}};const putD=o=>{try{localStorage.setItem('dr',JSON.stringify(o))}catch(e){}};
 
 // ===== CONFIGURACIÓN SUPABASE (Project Settings → API) =====
 const SUPA_URL="https://kdsbnnhxyqliytxgseye.supabase.co",SUPA_KEY="sb_publishable_DKo_JvLuv1pkGb9_uNfrIw_AbSLQ8HQ";
@@ -63,18 +73,27 @@ try{if(typeof supabase=="undefined")throw new Error("No cargó la librería de S
 dl={save:async({filename,data})=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type:"text/csv;charset=utf-8"}));a.download=filename;document.body.appendChild(a);a.click();a.remove()}};
 function mk(name){
   let cb=()=>{},last="";
-  const load=async()=>{const{data,error}=await sb.from("docs").select("data").eq("coleccion",name);if(error){console.error(error);return}
-    const l=data.map(x=>x.data),j=JSON.stringify(l);if(j!==last){last=j;cb(l)}};
+  const load=async()=>{let q=sb.from("docs").select("data").eq("coleccion",name);if(name=="log")q=q.order("id",{ascending:false}).limit(500);
+    const{data,error}=await q;if(error){console.error(error);return}const l=data.map(x=>x.data),j=JSON.stringify(l);if(j!==last){last=j;cb(l)}};
+  const nm=x=>x&&(x.nombre||x.placa||x.razon)||"";
   return{load,sub:f=>{cb=f;load()},
-    save:async r=>{const q=U&&U.rol=="cond"?sb.from("docs").update({data:r}).eq("coleccion",name).eq("id",r.id):sb.from("docs").upsert({coleccion:name,id:r.id,data:r});
-      const{error}=await q;if(error)throw error;await load()},
-    del:async id=>{const{error}=await sb.from("docs").delete().eq("coleccion",name).eq("id",id);if(error)alert("No se pudo eliminar: "+error.message);load()}};
+    save:async r=>{const cond=U&&U.rol=="cond",nuevo=!(D[name]||[]).some(x=>x.id==r.id);
+      const row={coleccion:name,id:r.id,data:r};
+      const q=name=="log"?sb.from("docs").insert(row):cond?sb.from("docs").update({data:r}).eq("coleccion",name).eq("id",r.id):sb.from("docs").upsert(row);
+      const{error}=await q;if(error)throw error;
+      if(name!="log"&&name!="rutas")logE(nuevo?"Creado":"Actualizado",name+": "+nm(r));
+      if(name!="log")await load()},
+    del:async id=>{const x=(D[name]||[]).find(y=>y.id==id);const{error}=await sb.from("docs").delete().eq("coleccion",name).eq("id",id);
+      if(error)alert("No se pudo eliminar: "+error.message);else if(name!="rutas")logE("Eliminado",name+": "+nm(x));load()}};
 }
+const LG=mk("log");
+function logE(accion,detalle,ruta){if(!U)return Promise.resolve();
+  return LG.save({id:"l"+Date.now()+Math.random().toString(36).slice(2,6),ts:new Date().toISOString(),usuario:U.nombre,rol:U.rol,accion,detalle:detalle||"",ruta:ruta||""}).then(()=>{if(S.log)S.log.load()}).catch(e=>console.error("bitácora",e))}
 let started=false;
 function startData(){
   if(started){Object.values(S).forEach(s=>s.load());return}started=true;
-  ["rutas","clientes","materiales","placas"].forEach(n=>{S[n]=mk(n);
-    S[n].sub(l=>{D[n]=l.sort((a,b)=>n=="rutas"?(b.num||0)-(a.num||0):(a.creado||0)-(b.creado||0));renderAll()})});
+  (U.rol=="prog"?["rutas","clientes","materiales","placas","log"]:["rutas","clientes","materiales","placas"]).forEach(n=>{S[n]=mk(n);
+    S[n].sub(l=>{D[n]=l.sort((a,b)=>n=="rutas"?(b.num||0)-(a.num||0):n=="log"?String(b.ts).localeCompare(String(a.ts)):(a.creado||0)-(b.creado||0));renderAll()})});
   sb.channel("docs").on("postgres_changes",{event:"*",schema:"public",table:"docs"},()=>Object.values(S).forEach(s=>s.load())).subscribe();
   setInterval(()=>{if(!document.hidden)Object.values(S).forEach(s=>s.load())},20000);
 }
@@ -86,64 +105,90 @@ async function afterLogin(user){
 async function init(){if(!sb){$("#lerr").textContent="Configuración: "+cfgErr;return}const{data:{session}}=await sb.auth.getSession();if(session)await afterLogin(session.user)}
 function fillLogin(){}
 $("#lgo").onclick=async()=>{if(!sb){alert("Configuración: "+cfgErr);return}const{data,error}=await sb.auth.signInWithPassword({email:$("#lu").value.trim().toLowerCase().replace(/\s+/g,"")+"@"+DOMINIO,password:$("#lp").value});
-  if(error){alert("No se pudo ingresar: "+error.message);return}await afterLogin(data.user)};
-$("#out").onclick=async()=>{await sb.auth.signOut();U=null;ptIdx=null;$("#app").classList.add("hide");$("#login").classList.remove("hide");$("#lp").value=""};
+  if(error){alert("No se pudo ingresar: "+error.message);return}await afterLogin(data.user);if(U)logE("Ingreso","")};
+$("#out").onclick=async()=>{if(U)await logE("Salida","");await sb.auth.signOut();U=null;ptIdx=null;$("#app").classList.add("hide");$("#login").classList.remove("hide");$("#lp").value=""};
 function renderAll(){if(!U){fillLogin();return}if(U.rol=="prog"&&pdet){const r=D.rutas.find(x=>x.id==pdet);if(!r){pdet=null;setTab(tab)}else{V(win(r,false));wire()}return}const t=T[tab];t&&t.f&&t.f()}
 
 function enter(){$("#login").classList.add("hide");$("#app").classList.remove("hide");
   const d=hoy().split("-");$("#hd").textContent=d[2]+"-"+d[1]+"-"+d[0];$("#hu").textContent=U.nombre;
-  const tabs=U.rol=="prog"?[["rutas","Programar"],["ejec","En ejecución"],["hist","Histórico"],["mat","Materiales"],["cli","Clientes"],["pla","Placas"],["rep","Reporte"]]:[];
-  $("#nav").innerHTML=tabs.map(t=>`<button data-t="${t[0]}">${t[1]}</button>`).join("");
-  document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>setTab(b.dataset.t));
-  setTab(U.rol=="prog"?"rutas":"cond")}
-function setTab(t){tab=t;ptIdx=null;pdet=null;scr="home";document.querySelectorAll("[data-t]").forEach(b=>b.className=b.dataset.t==t?"on":"");T[t].b();T[t].f()}
+  setTab(U.rol=="prog"?"home":"cond")}
+function setTab(t){tab=t;ptIdx=null;pdet=null;scr="home";T[t].b();T[t].f()}
+$("#hm").onclick=()=>{if(U)setTab(U.rol=="prog"?"home":"cond")};
 
 // ---------- utilidades de rutas ----------
-const matsDe=s=>D.materiales.filter(m=>m.servicio==s).map(m=>m.nombre);
+const matsDe=s=>D.materiales.filter(m=>m.servicio==s).map(m=>m.nombre).sort((a,b)=>a.localeCompare(b,"es"));
+const hm=t=>t?new Date(t).toLocaleString("es-CO"):"";
+const keyC=c=>c.cod||c.razon;
+const ocup=tipo=>{const m={};D.rutas.filter(r=>!r.cerrada&&r.tipo==tipo).forEach(r=>r.puntos.forEach(p=>{if(p.estado=="pendiente")m[keyC(p)]=r.num}));return m};
 const ultima=cod=>{let u="";D.rutas.forEach(r=>r.puntos.forEach(p=>{if(p.cod==cod&&p.estado=="cerrado"&&(p.cierre||"")>u)u=p.cierre}));return u?u.slice(0,10):""};
 const kgR=r=>+r.puntos.reduce((s,p)=>s+(p.total||0),0).toFixed(1);
-function rtable(r,mine){
-  return `<div class="sc"><table><tr><th>Codigo SEA</th><th>Nit</th><th>Razon Social</th><th>Ciudad</th><th>Direccion</th><th>Frecuencia</th><th>Dias</th><th>Estado Cartera</th><th>Autorizado Cartera</th><th>Ultima Recolección</th><th>Estado</th><th>Detalle</th></tr>`+
-  r.puntos.map((p,i)=>{const c=D.clientes.find(x=>x.cod==p.cod)||{};
-   return `<tr><td>${esc(p.cod)}</td><td>${esc(p.nit)}</td><td>${esc(p.razon)}</td><td>${esc(p.ciudad)}</td><td>${esc(p.dir)}</td><td>${esc(c.frec)}</td><td>${esc(c.dias)}</td><td>${esc(c.cartera)}</td><td>${esc(c.aut)}</td><td>${esc(ultima(p.cod))}</td>
-   <td>${p.estado=="pendiente"&&mine&&!r.cerrada?`<button class="btn s o" data-pt="${r.id}|${i}">ABORDAR</button>`:`<span class="tag ${TG[p.estado]||""}">${ST[p.estado]}</span>`}</td>
-   <td>${p.total?p.total+" kg":""}${p.obs?`<div class="mu">${esc(p.obs)}</div>`:""}${p.foto?`<img class="f" style="max-width:70px" src="${p.foto}">`:""}</td></tr>`}).join("")+`</table></div>`}
+function rtable(r,mine,op){
+  const rows=r.puntos.map((p,i)=>[p,i]).filter(x=>!op||x[0].estado=="pendiente");
+  if(op&&!rows.length)return '<div class="mu" style="text-align:center;padding:16px">Todos los clientes fueron gestionados ✔</div>';
+  const ck=op&&mine;
+  return `<div class="sc"><table><tr>${ck?"<th></th>":""}<th>Codigo SEA</th><th>Nit</th><th>Razon Social</th><th>Ciudad</th><th>Direccion</th><th>Frecuencia</th><th>Dias</th><th>Estado Cartera</th><th>Autorizado Cartera</th><th>Ultima Recolección</th>${op?"":"<th>Estado</th><th>Detalle</th>"}</tr>`+
+  rows.map(x=>{const p=x[0],i=x[1],c=D.clientes.find(z=>z.cod==p.cod)||{};
+   return `<tr>${ck?`<td><button class="ck ${r.iniciada&&!r.cerrada?"on":""}" data-pt="${r.id}|${i}" title="Diligenciar">✓</button></td>`:""}<td>${esc(p.cod)}</td><td>${esc(p.nit)}</td><td>${esc(p.razon)}</td><td>${esc(p.ciudad)}</td><td>${esc(p.dir)}</td><td>${esc(c.frec)}</td><td>${esc(c.dias)}</td><td>${esc(c.cartera)}</td><td>${esc(c.aut)}</td><td>${esc(ultima(p.cod))}</td>`+
+   (op?"":`<td><span class="tag ${TG[p.estado]||""}">${ST[p.estado]}</span></td><td>${p.total?p.total+" kg":""}${p.obs?`<div class="mu">${esc(p.obs)}</div>`:""}${p.foto?`<img class="f" style="max-width:70px" src="${p.foto}">`:""}</td>`)+`</tr>`}).join("")+`</table></div>`}
 const rstate=r=>r.cerrada?"FINALIZADA":r.conductor?"EN EJECUCIÓN":"PENDIENTE POR ASIGNAR";
 function rcards(list){return list.map(r=>`<div class="rt"><div class="rh" data-go="${r.id}"><div>Ruta: <b>${r.num}</b> <span class="or">${esc(r.placa)}</span> :: ${esc(r.fecha)}
-  <div class="mu">${esc(r.tipo)} · ${r.conductor?"Conductor: "+esc(r.conductor):"Sin asignar"} · ${rstate(r)} · Creado:${esc(r.creadoTxt)}</div></div><span>›</span></div></div>`).join("")||'<div class="mu">Sin rutas.</div>'}
+  <div class="mu">${esc(r.tipo)} · ${r.conductor?"Conductor: "+esc(r.conductor):"Sin asignar"} · ${rstate(r)}${r.iniciada?" · Iniciada "+esc(hm(r.iniciada)):""} · Creado:${esc(r.creadoTxt)}</div></div><span>›</span></div></div>`).join("")||'<div class="mu">Sin rutas.</div>'}
 function win(r,c){
-  const mine=c&&r.conductor==U.nombre,libre=!r.conductor&&!r.cerrada,pend=r.puntos.some(p=>p.estado=="pendiente");
-  return `<button class="btn s d" data-back>← Volver</button><h1>Ruta <b>${r.num}</b> ${esc(r.placa)}</h1><div class="mu" style="text-align:center">${esc(r.tipo)} · ${esc(r.fecha)} · ${r.conductor?"Conductor: "+esc(r.conductor):"Sin asignar"} · ${rstate(r)}</div>`+rtable(r,mine)+
+  const mine=c&&r.conductor==U.nombre,libre=!r.conductor&&!r.cerrada,pend=r.puntos.some(p=>p.estado=="pendiente"),tot=r.puntos.length,hec=tot-r.puntos.filter(p=>p.estado=="pendiente").length;
+  const lg=!c?D.log.filter(l=>String(l.ruta)==String(r.num)).slice().reverse():[];
+  return `<button class="btn s d" data-back>← Volver</button><h1>Ruta <b>${r.num}</b> ${esc(r.placa)}</h1><div class="mu" style="text-align:center">${esc(r.tipo)} · ${esc(r.fecha)} · ${r.conductor?"Conductor: "+esc(r.conductor):"Sin asignar"} · ${rstate(r)}${r.iniciada?" · Iniciada "+esc(hm(r.iniciada)):""} · Gestionados ${hec}/${tot}</div>`+rtable(r,mine,c)+
   (c&&libre?`<button class="btn o" data-abordar="${r.id}">ABORDAR RUTA</button>`:"")+
+  (mine&&!r.cerrada&&!r.iniciada?`<div class="mu" style="text-align:center">Pulsa INICIAR RUTA para habilitar los botones de cada cliente.</div><button class="btn" data-ini="${r.id}">INICIAR RUTA</button>`:"")+
   (c&&r.conductor&&!mine&&!r.cerrada?`<div class="mu">Esta ruta fue abordada por otro conductor.</div>`:"")+
-  (mine&&!r.cerrada&&!pend?`<button class="btn" data-term="${r.id}">TERMINAR RUTA</button>`:"")+
+  (mine&&!r.cerrada&&r.iniciada&&!pend?`<button class="btn" data-term="${r.id}">TERMINAR RUTA</button>`:"")+
+  (lg.length?`<h2 style="margin-top:14px">Movimientos de la ruta</h2><div class="sc"><table><tr><th>Fecha y hora</th><th>Usuario</th><th>Acción</th><th>Detalle</th></tr>${lg.map(l=>`<tr><td>${esc(hm(l.ts))}</td><td>${esc(l.usuario)}</td><td>${esc(l.accion)}</td><td>${esc(l.detalle)}</td></tr>`).join("")}</table></div>`:"")+
   (!c?`<button class="btn r" data-del="${r.id}">Eliminar ruta</button>`:"")}
 function wire(){
   document.querySelectorAll("[data-go]").forEach(e=>e.onclick=()=>{if(U.rol=="prog")pdet=e.dataset.go;else{curId=e.dataset.go;scr="ruta"}renderAll()});
   document.querySelectorAll("[data-back]").forEach(e=>e.onclick=()=>{if(U.rol=="prog"){setTab(tab);return}const r=D.rutas.find(x=>x.id==curId);scr=r&&!r.conductor&&!r.cerrada?"list":"home";renderAll()});
-  document.querySelectorAll("[data-del]").forEach(e=>e.onclick=()=>{if(confirm("¿Eliminar la ruta?")){S.rutas.del(e.dataset.del);setTab(tab)}});
+  document.querySelectorAll("[data-del]").forEach(e=>e.onclick=()=>{if(confirm("¿Eliminar la ruta?")){const r=D.rutas.find(x=>x.id==e.dataset.del);S.rutas.del(e.dataset.del);logE("Ruta eliminada",r?r.tipo+" · "+r.placa:"",r&&r.num);setTab(tab)}});
   document.querySelectorAll("[data-abordar]").forEach(e=>e.onclick=async()=>{const r=clone(D.rutas.find(x=>x.id==e.dataset.abordar));
     if(r.conductor){alert("La ruta ya fue abordada por "+r.conductor);return}
-    if(act(r.tipo)){alert("Ya tienes una ruta activa en "+r.tipo);return}
-    r.conductor=U.nombre;r.tomada=new Date().toISOString();try{await S.rutas.save(r)}catch(x){err(x)}});
+    const a=act();if(a){alert("Debes terminar primero la ruta "+a.num+" ("+a.tipo+") antes de abordar otra.");return}
+    r.conductor=U.nombre;r.tomada=new Date().toISOString();
+    const{data,error}=await sb.from("docs").update({data:r}).eq("coleccion","rutas").eq("id",r.id).eq("data->>conductor","").select();
+    if(error){err(error);return}
+    S.rutas.load();if(!data.length){alert("La ruta ya fue abordada por otro conductor.");return}
+    logE("Ruta abordada",r.tipo+" · "+r.placa,r.num)});
+  document.querySelectorAll("[data-ini]").forEach(e=>e.onclick=async()=>{const r=clone(D.rutas.find(x=>x.id==e.dataset.ini));r.iniciada=new Date().toISOString();
+    try{await S.rutas.save(r);logE("Ruta iniciada","",r.num)}catch(x){err(x)}});
   document.querySelectorAll("[data-term]").forEach(e=>e.onclick=async()=>{if(!confirm("¿Terminar la ruta? Pasará al histórico."))return;
-    const r=clone(D.rutas.find(x=>x.id==e.dataset.term));r.cerrada=true;r.fin=new Date().toISOString();try{await S.rutas.save(r);scr="home";renderAll()}catch(x){err(x)}});
-  document.querySelectorAll("[data-pt]").forEach(e=>e.onclick=()=>{const[a,b]=e.dataset.pt.split("|");curId=a;openPt(+b)});
+    const r=clone(D.rutas.find(x=>x.id==e.dataset.term));r.cerrada=true;r.fin=new Date().toISOString();try{await S.rutas.save(r);logE("Ruta terminada","",r.num);scr="home";renderAll()}catch(x){err(x)}});
+  document.querySelectorAll("[data-pt]").forEach(e=>e.onclick=()=>{const[a,b]=e.dataset.pt.split("|");const r=D.rutas.find(x=>x.id==a);
+    if(!r.iniciada){alert("Primero debes pulsar INICIAR RUTA.");return}curId=a;openPt(+b)});
 }
 const lh=t=>`<h1>${t}</h1><button class="btn" data-f="hoy">Listar HOY</button><button class="btn o" data-f="todo">Listar todo</button>`;
 function lbind(){document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filt=b.dataset.f;renderAll()})}
 const filtra=l=>l.filter(r=>(filt=="todo"||r.fecha==hoy())&&(!fsv||r.tipo==fsv));
 
 // ---------- pestañas ----------
-const T={};
-T.rutas={b(){sel.clear();V(`<div class="card"><h2>Programar ruta</h2><div class="row"><div><label>Fecha</label><input type="date" id="fecha" value="${hoy()}"></div><div><label>Placa</label><select id="placa"></select></div></div>
- <label>Servicio</label><select id="tipo">${SERV.map(s=>`<option>${s}</option>`).join("")}</select><div id="prev" class="mu"></div>
- <label>Clientes</label><div id="selC"></div><button class="btn" id="rev">Revisar y confirmar</button></div><div class="card hide" id="resumen"></div><div id="plist"></div>`);
- $("#tipo").onchange=()=>T.rutas.f();
+const T={};let psv="";
+const cntR=f=>D.rutas.filter(r=>(!psv||r.tipo==psv)&&f(r)).length;
+T.home={b(){V(`<h1 id="ht"></h1><div id="hs" style="text-align:center;margin-bottom:12px"></div><div class="g4" id="hb"></div><div class="g4" id="hm2"></div>`)},
+ f(){$("#ht").textContent=psv||"TODOS LOS SERVICIOS";
+  $("#hs").innerHTML=["",...SERV].map(s=>`<button class="btn s ${s==psv?"":"d"}" style="margin:2px" data-ps="${s}">${s||"TODOS"}</button>`).join("");
+  const B=(t,c,l,n)=>`<button class="big" style="background:${c}" data-g2="${t}">${l}${n!=null?`<span class="badge">${n}</span>`:""}</button>`;
+  $("#hb").innerHTML=B("rutas","var(--ol)","Planificador Ruta")+B("sin","var(--or)","Rutas sin asignar",cntR(r=>!r.conductor&&!r.cerrada))+B("ejec","var(--gr)","Ruta en Ejecución",cntR(r=>r.conductor&&!r.cerrada))+B("hist","var(--dk)","Ruta Histórico");
+  $("#hm2").innerHTML=[["mat","Materiales"],["cli","Clientes"],["pla","Placas"],["rep","Reporte"],["bit","Bitácora"]].map(x=>`<button class="big sm" style="background:var(--dk)" data-g2="${x[0]}">${x[1]}</button>`).join("");
+  document.querySelectorAll("[data-ps]").forEach(b=>b.onclick=()=>{psv=b.dataset.ps;T.home.f()});
+  document.querySelectorAll("[data-g2]").forEach(b=>b.onclick=()=>setTab(b.dataset.g2))}};
+
+T.rutas={b(){sel.clear();V(`<h1>Planificador Ruta</h1><div class="card" id="nueva"><div class="row"><div><label>Fecha</label><input type="date" id="fecha" value="${hoy()}"></div><div><label>Placa</label><select id="placa"></select></div></div>
+ <label>Servicio</label><select id="tipo">${SERV.map(s=>`<option ${s==psv?"selected":""}>${s}</option>`).join("")}</select><div id="prev" class="mu"></div>
+ <label>Clientes</label><div id="selC"></div><button class="btn" id="rev">Revisar y confirmar</button></div><div class="card hide" id="resumen"></div>`);
+ $("#tipo").onchange=()=>{sel.clear();T.rutas.f()};
  $("#rev").onclick=()=>{
   const tipo=$("#tipo").value,mats=matsDe(tipo),pts=D.clientes.filter(c=>sel.has(c.id)),placa=$("#placa").value.trim().toUpperCase();
   if(!placa||!pts.length){alert("Selecciona una placa (créalas en Placas) y al menos un cliente.");return}
-  if(!mats.length){alert("El servicio "+tipo+" no tiene materiales. Créalos en la pestaña Materiales.");return}
+  if(!mats.length){alert("El servicio "+tipo+" no tiene materiales. Créalos en Materiales.");return}
+  if(new Set(pts.map(keyC)).size!=pts.length){alert("Hay clientes repetidos (mismo código SEA) en la selección.");return}
+  const oc=ocup(tipo),dup=pts.filter(c=>oc[keyC(c)]);
+  if(dup.length){alert("Estos clientes ya están asignados a otra ruta abierta de "+tipo+":\n"+dup.map(c=>c.razon+" (ruta "+oc[keyC(c)]+")").join("\n"));return}
   const b={id:"r"+Date.now(),num:Math.max(0,...D.rutas.map(r=>r.num||0))+1,fecha:$("#fecha").value,placa,tipo,mats,creado:Date.now(),creadoTxt:new Date().toLocaleString("sv-SE"),conductor:"",cerrada:false,
    puntos:pts.map(c=>({cod:c.cod,nit:c.nit,razon:c.razon,ciudad:c.ciudad,dir:c.dir,estado:"pendiente"}))};
   $("#resumen").innerHTML=`<h1>RECOLECCIÓN - <b>${esc(tipo)}</b></h1><div class="mu">${esc(placa)} · ${esc(b.fecha)}</div>
@@ -152,18 +197,20 @@ T.rutas={b(){sel.clear();V(`<div class="card"><h2>Programar ruta</h2><div class=
    <div class="row"><button class="btn o" id="rok">CONFIRMAR</button><button class="btn d" id="rno">CANCELAR</button></div>`;
   $("#resumen").classList.remove("hide");
   $("#rno").onclick=()=>$("#resumen").classList.add("hide");
-  $("#rok").onclick=async()=>{try{await S.rutas.save(b);sel.clear();$("#resumen").classList.add("hide");T.rutas.f()}catch(e){err(e)}}}},
- f(){const m=matsDe($("#tipo").value);$("#prev").textContent="Residuos que se cargarán al operador ("+m.length+"): "+(m.join(", ")||"ninguno, créalos en Materiales");
-  $("#selC").innerHTML=D.clientes.map(c=>`<div class="chk"><input type="checkbox" data-sc="${c.id}" ${sel.has(c.id)?"checked":""}><div>${esc(c.razon)}<div class="mu">${esc(c.cod)} · ${esc(c.ciudad)} · ${esc(c.dir)}</div></div></div>`).join("")||'<div class="mu">Crea clientes en la pestaña Clientes.</div>';
-  document.querySelectorAll("[data-sc]").forEach(e=>e.onchange=()=>e.checked?sel.add(e.dataset.sc):sel.delete(e.dataset.sc));
-  const v=$("#placa").value;$("#placa").innerHTML=D.placas.map(p=>`<option>${esc(p.placa)}</option>`).join("");$("#placa").value=v;const l=D.rutas.filter(r=>!r.conductor&&!r.cerrada);$("#plist").innerHTML=`<h2>Pendientes por asignar (${l.length})</h2>`+rcards(l);wire()}};
-const lt=(t,fn)=>({b(){V(`<div id="lst"></div>`)},f(){const l=D.rutas.filter(fn);$("#lst").innerHTML=`<h2>${t} (${l.length})</h2>`+rcards(l);wire()}});
-T.ejec=lt("Rutas en ejecución",r=>r.conductor&&!r.cerrada);T.hist=lt("Histórico de rutas finalizadas",r=>r.cerrada);
+  $("#rok").onclick=async()=>{try{await S.rutas.save(b);logE("Ruta creada",tipo+" · "+placa+" · "+b.puntos.length+" clientes",b.num);setTab("sin")}catch(e){err(e)}}}},
+ f(){const tipo=$("#tipo").value,m=matsDe(tipo),oc=ocup(tipo);$("#prev").textContent="Residuos que se cargarán al operador ("+m.length+"): "+(m.join(", ")||"ninguno, créalos en Materiales");
+  const v=$("#placa").value;$("#placa").innerHTML=D.placas.map(p=>`<option>${esc(p.placa)}</option>`).join("");if(v&&D.placas.some(p=>p.placa==v))$("#placa").value=v;
+  $("#selC").innerHTML=D.clientes.map(c=>{const o=oc[keyC(c)];return `<div class="chk"><input type="checkbox" data-sc="${c.id}" ${o?"disabled":sel.has(c.id)?"checked":""}><div>${esc(c.razon)}<div class="mu">${esc(c.cod)} · ${esc(c.ciudad)} · ${esc(c.dir)}${o?` · <b style="color:var(--rd)">Ya asignado en ruta ${o}</b>`:""}</div></div></div>`}).join("")||'<div class="mu">Crea clientes en Clientes.</div>';
+  document.querySelectorAll("[data-sc]").forEach(e=>e.onchange=()=>e.checked?sel.add(e.dataset.sc):sel.delete(e.dataset.sc))}};
+const lt=(t,fn)=>({b(){V(`<div id="lst"></div>`)},f(){const l=D.rutas.filter(r=>fn(r)&&(!psv||r.tipo==psv));$("#lst").innerHTML=`<h1>${t}${psv?" - <b>"+psv+"</b>":""}</h1><p><b>Resultado total: ${l.length}</b></p>`+rcards(l);wire()}});
+T.sin=lt("Rutas sin asignar",r=>!r.conductor&&!r.cerrada);T.ejec=lt("Rutas en ejecución",r=>r.conductor&&!r.cerrada);T.hist=lt("Ruta histórico",r=>r.cerrada);
 T.pla={b(){V(`<div class="card"><h2>Placas</h2><label>Placa</label><input id="pn" placeholder="ZNL256"><button class="btn" id="padd">Agregar placa</button></div><div class="card" id="pl"></div>`);
- $("#padd").onclick=async()=>{const n=$("#pn").value.trim().toUpperCase();if(!n)return;try{await S.placas.save({id:"p"+Date.now(),placa:n,creado:Date.now()});$("#pn").value=""}catch(e){err(e)}}},
+ $("#padd").onclick=async()=>{const n=$("#pn").value.trim().toUpperCase();if(!n)return;if(D.placas.some(p=>p.placa==n)){alert("Esa placa ya existe.");return}
+  try{await S.placas.save({id:"p"+Date.now(),placa:n,creado:Date.now()});$("#pn").value=""}catch(e){err(e)}}},
  f(){$("#pl").innerHTML=D.placas.map(p=>`<div class="chk">${esc(p.placa)}<button class="btn s r" style="margin-left:auto" data-dp="${p.id}">Eliminar</button></div>`).join("")||'<div class="mu">Sin placas.</div>';
   document.querySelectorAll("[data-dp]").forEach(b=>b.onclick=()=>S.placas.del(b.dataset.dp))}};
-
+T.bit={b(){V(`<h1>Bitácora de movimientos</h1><div id="bl"></div>`)},
+ f(){$("#bl").innerHTML=`<div class="sc"><table><tr><th>Fecha y hora</th><th>Usuario</th><th>Acción</th><th>Detalle</th><th>Ruta</th></tr>`+D.log.map(l=>`<tr><td>${esc(hm(l.ts))}</td><td>${esc(l.usuario)}</td><td>${esc(l.accion)}</td><td>${esc(l.detalle)}</td><td>${esc(l.ruta)}</td></tr>`).join("")+`</table></div>`+(D.log.length?"":'<div class="mu">Sin movimientos.</div>')}};
 T.mat={b(){V(`<div class="card"><h2>Materiales por línea de servicio</h2><div class="row"><div><label>Servicio</label><select id="ms">${SERV.map(s=>`<option>${s}</option>`).join("")}</select></div><div><label>Material</label><input id="mn"></div></div><button class="btn" id="madd">Agregar material</button></div><div id="mlist"></div>`);
  $("#madd").onclick=async()=>{const n=$("#mn").value.trim();if(!n)return;try{await S.materiales.save({id:"m"+Date.now(),nombre:n.toUpperCase(),servicio:$("#ms").value,creado:Date.now()});$("#mn").value=""}catch(e){err(e)}}},
  f(){$("#mlist").innerHTML=SERV.map(s=>`<div class="card"><h2>${s}</h2>`+(D.materiales.filter(m=>m.servicio==s).map(m=>`<div class="chk">${esc(m.nombre)}<button class="btn s r" style="margin-left:auto" data-dm="${m.id}">Eliminar</button></div>`).join("")||'<div class="mu">Sin materiales.</div>')+`</div>`).join("");
@@ -172,7 +219,7 @@ T.mat={b(){V(`<div class="card"><h2>Materiales por línea de servicio</h2><div c
 const CF=[["cod","Código SEA"],["nit","NIT"],["razon","Razón social"],["ciudad","Ciudad"],["dir","Dirección"],["frec","Frecuencia"],["dias","Días"],["cartera","Estado cartera"],["aut","Autorizado cartera"]];
 T.cli={b(){V(`<div class="card"><h2>Clientes / puntos</h2>${CF.map(f=>`<label>${f[1]}</label><input id="c_${f[0]}">`).join("")}<button class="btn" id="cadd">Agregar cliente</button></div><div class="card sc"><table><tr>${CF.map(f=>`<th>${f[1]}</th>`).join("")}<th></th></tr><tbody id="clist"></tbody></table></div>`);
  $("#cadd").onclick=async()=>{const c={id:"c"+Date.now(),creado:Date.now()};CF.forEach(f=>c[f[0]]=$("#c_"+f[0]).value.trim());
-  if(!c.razon){alert("La razón social es obligatoria.");return}try{await S.clientes.save(c);CF.forEach(f=>$("#c_"+f[0]).value="")}catch(e){err(e)}}},
+  if(!c.razon){alert("La razón social es obligatoria.");return}if(c.cod&&D.clientes.some(x=>x.cod==c.cod)){alert("Ya existe un cliente con ese código SEA.");return}try{await S.clientes.save(c);CF.forEach(f=>$("#c_"+f[0]).value="")}catch(e){err(e)}}},
  f(){$("#clist").innerHTML=D.clientes.map(c=>`<tr>${CF.map(f=>`<td>${esc(c[f[0]])}</td>`).join("")}<td><button class="btn s r" data-dc="${c.id}">✕</button></td></tr>`).join("");
   document.querySelectorAll("[data-dc]").forEach(b=>b.onclick=()=>S.clientes.del(b.dataset.dc))}};
 
@@ -200,24 +247,24 @@ T.rep={b(){V(`<div class="card"><h2>Reporte de lo realizado</h2><div class="row"
    Object.keys(tm).sort().map(m=>`<tr><td>${esc(m)}</td><td>${+tm[m].toFixed(1)}</td></tr>`).join("")+`</table></div>`}};
 
 // ---------- conductor ----------
-const act=s=>D.rutas.find(r=>r.conductor==U.nombre&&!r.cerrada&&r.tipo==s);
+const act=s=>D.rutas.find(r=>r.conductor==U.nombre&&!r.cerrada&&(!s||r.tipo==s));
 T.cond={b(){V('<div id="clst"></div>')},
  f(){const el=$("#clst");
   if(draft&&el){const r=D.rutas.find(x=>x.id==draft.rid);if(r){const d=draft;draft=null;curId=d.rid;scr="ruta";ptIdx=d.i;openAlt(clone(r),d.i,d.kind);$("#ob").value=d.ob||"";putD(d);return}}
   if(ptIdx!==null||!el)return;
   if(scr=="home"){
-   el.innerHTML="<h1>Rutas Programadas</h1>"+SERV.map(s=>`<button class="btn ${act(s)?"o":""}" data-sv="${s}">${s}${act(s)?" · RUTA ACTIVA":""}</button>`).join("");
+   el.innerHTML="<h1>Rutas Programadas</h1><div class=\"g4\">"+SERV.map(s=>{const a=act(s),n=D.rutas.filter(r=>!r.conductor&&!r.cerrada&&r.tipo==s).length;
+    return `<button class="big" style="background:${a?"var(--ol)":"var(--gr)"}" data-sv="${s}">${s}${a?'<div style="font-size:13px">RUTA ACTIVA</div>':""}<span class="badge">${n}</span></button>`}).join("")+"</div>";
    document.querySelectorAll("[data-sv]").forEach(b=>b.onclick=()=>{fsv=b.dataset.sv;const a=act(fsv);if(a){curId=a.id;scr="ruta"}else scr="list";T.cond.f()})}
   else if(scr=="list"){const l=filtra(D.rutas.filter(r=>!r.conductor&&!r.cerrada&&r.tipo==fsv));
    el.innerHTML=`<button class="btn s d" data-back>← Volver</button>`+lh("Rutas Programadas - <b>"+fsv+"</b>")+`<p><b>Resultado total: ${l.length} - ${fsv}</b></p>`+rcards(l);lbind();wire()}
-  else{const r=D.rutas.find(x=>x.id==curId);if(!r){scr="home";T.cond.f();return}el.innerHTML=win(r,true);wire()}
-  if(scr=="home"){}}};
+  else{const r=D.rutas.find(x=>x.id==curId);if(!r){scr="home";T.cond.f();return}el.innerHTML=win(r,true);wire()}}};
 
 // ---------- diligenciar punto ----------
-async function saveRuta(r){try{await S.rutas.save(r)}catch(e){err(e);return}clrD();ptIdx=null;scr="ruta";T.cond.b();T.cond.f()}
+async function saveRuta(r){try{await S.rutas.save(r)}catch(e){err(e);return false}clrD();ptIdx=null;scr="ruta";T.cond.b();T.cond.f();return true}
 function head(r,p){return `<h1>RECOLECCIÓN - <b>${esc(r.tipo)}</b></h1><div><button class="sq r" id="aus">! Cliente ausente</button><button class="sq" style="background:var(--or)" id="nt">! No terminar</button> <b style="color:#2a9d3a;font-size:12px">${esc(p.razon)}</b><div class="mu">${esc(p.cod)} · NIT ${esc(p.nit)} · ${esc(p.ciudad)} · ${esc(p.dir)}</div></div>`}
 function openPt(i){
-  const r=clone(D.rutas.find(x=>x.id==curId)),p=r.puntos[i];ptIdx=i;signed=false;
+  const r=clone(D.rutas.find(x=>x.id==curId)),p=r.puntos[i];r.mats.sort((a,b)=>a.localeCompare(b,"es"));ptIdx=i;signed=false;
   V(head(r,p)+`<p class="mu">Resultados: ${r.mats.length} Residuos asignados</p><table><tr><th>Residuo</th><th>Cant (Kg)</th><th>Observación</th></tr>`+
    r.mats.map((m,k)=>`<tr><td>${esc(m)}</td><td><input type="number" inputmode="decimal" step="0.1" min="0" data-kg="${k}"></td><td><input data-ob="${k}"></td></tr>`).join("")+
    `<tr><th>Total Kg</th><th colspan="2" id="tot">0</th></tr></table>
@@ -242,7 +289,7 @@ function openPt(i){
     if(!signed){alert("Falta la firma.");return}
     const t=document.createElement("canvas");t.width=300;t.height=100;t.getContext("2d").drawImage(cv,0,0,300,100);
     Object.assign(p,{estado:"cerrado",items,total:+total.toFixed(1),entrega:$("#ent").value.trim(),email:$("#mail").value.trim(),firma:t.toDataURL("image/png"),cierre:new Date().toISOString()});
-    await saveRuta(r)}
+    if(await saveRuta(r))logE("Punto recolectado",p.razon+" · "+p.total+" kg",r.num)}
 }
 function toUrl(f,max=640){return new Promise((res,rej)=>{const fr=new FileReader();fr.onerror=()=>rej(new Error("No se pudo leer la imagen"));
   fr.onload=()=>{const im=new Image();im.onerror=()=>rej(new Error("Imagen no válida"));im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");
@@ -260,7 +307,7 @@ function openAlt(r,i,kind){
   $("#ok").onclick=async()=>{const ob=$("#ob").value.trim();
     if(!ob){alert("La observación es obligatoria.");return}
     if(aus&&!foto&&!confirm("No hay foto cargada. ¿Continuar sin foto?"))return
-    Object.assign(p,{estado:kind,obs:ob,cierre:new Date().toISOString()});if(aus)p.foto=foto;await saveRuta(r)}
+    Object.assign(p,{estado:kind,obs:ob,cierre:new Date().toISOString()});if(aus)p.foto=foto;if(await saveRuta(r))logE(aus?"Cliente ausente":"No terminado",p.razon+" · "+ob,r.num)}
 }
 init();
 </script></body></html>
