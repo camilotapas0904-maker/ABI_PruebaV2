@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rutas de recolección</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#fff;--bg2:#f6f6f6;--tx:#333;--mu:#777;--bd:#ddd;--gr:#62cc34;--or:#fdb40b;--dk:#34495e;--rd:#e74c3c}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#171a18;--bg2:#202522;--tx:#e6e9e6;--mu:#9aa39c;--bd:#333a35}}
+:root[data-theme="dark"]{--bg:#171a18;--bg2:#202522;--tx:#e6e9e6;--mu:#9aa39c;--bd:#333a35}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.4 Arial,Helvetica,sans-serif;border-top:4px solid;border-image:linear-gradient(90deg,#a05cc8,#4a90e2,#62cc34,#fdb40b,#e67e22,#e74c3c) 1}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;background:var(--bg2);border-bottom:1px solid var(--bd);font-size:13px}
+.bar button{border:0;background:none;color:var(--tx);font-size:18px}
+nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--bd)}
+nav button{flex:0 0 auto;padding:10px 14px;border:0;background:none;color:var(--tx);font-size:14px;border-bottom:3px solid transparent}
+nav button.on{border-color:var(--or);font-weight:700}
+main{max-width:820px;margin:0 auto;padding:10px}
+h1{font-weight:300;font-size:26px;text-align:center;margin:14px 0;color:var(--tx)}h1 b{font-weight:300;color:var(--or)}
+h2{font-size:16px;margin:0 0 8px}
+.card{border:1px solid var(--bd);padding:10px;margin-bottom:12px;background:var(--bg)}
+label{display:block;font-size:12px;color:var(--mu);margin:8px 0 3px}
+input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);background:var(--bg2);color:var(--tx);font:inherit}
+input[type=checkbox]{width:auto}
+textarea{min-height:70px}
+.row{display:flex;gap:8px;align-items:flex-end}.row>*{flex:1}
+.btn{display:block;width:100%;padding:14px;border:0;font-size:20px;font-weight:300;color:#fff;background:var(--gr);margin:10px 0}
+.btn.s{width:auto;display:inline-block;padding:6px 10px;font-size:12px;margin:0;font-weight:400}
+.btn.o{background:var(--or)}.btn.d{background:var(--dk)}.btn.r{background:var(--rd)}
+.sq.r{background:var(--rd)}.sq{border:0;color:#fff;padding:7px 10px;font-size:12px;font-weight:700;margin-right:6px}
+.rt{border:1px solid var(--bd);margin-bottom:6px}
+.rh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px;cursor:pointer;font-size:17px;font-weight:300}
+.or{color:var(--or)}.mu{color:var(--mu);font-size:12px}
+table{width:100%;border-collapse:collapse;font-size:12px}td,th{padding:5px;border:1px solid var(--bd);text-align:left;vertical-align:top}th{background:var(--bg2)}
+.sc{overflow-x:auto;padding:6px}
+.tag{font-size:11px;padding:2px 8px;border-radius:10px;background:var(--bd);white-space:nowrap}
+.tag.ok{background:var(--gr);color:#fff}.tag.rj{background:var(--rd);color:#fff}.tag.nj{background:var(--or);color:#fff}
+canvas{width:100%;height:150px;border:2px dashed var(--mu);background:#fff;touch-action:none;display:block}
+img.f{max-width:200px;border:1px solid var(--bd);margin-top:6px}
+.hide{display:none}
+td input{padding:6px}
+.chk{display:flex;gap:8px;align-items:center;padding:6px 0;border-top:1px solid var(--bd)}
+</style></head><body>
+<div id="login"><main><div class="card" style="margin-top:30px"><h1>Rutas de <b>recolección</b></h1>
+<label>Usuario</label><input id="lu" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><label>Clave</label><input id="lp" type="password" autocomplete="current-password">
+<button class="btn" id="lgo">INGRESAR</button><div id="lerr" class="mu" style="color:var(--rd)"></div></div></main></div>
+<div id="app" class="hide"><div class="bar"><span id="hd"></span><span>Usuario: <b id="hu"></b></span><button id="out" title="Salir">⎋</button></div><nav id="nav"></nav><main id="view"></main></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),V=h=>$("#view").innerHTML=h;
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const SERV=["APROVECHABLE","BIOLÓGICO","INDUSTRIAL"],ST={pendiente:"Pendiente",cerrado:"Recolectado",ausente:"Cliente ausente",no_terminado:"No terminado"},TG={cerrado:"ok",ausente:"rj",no_terminado:"nj"};
+const hoy=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const clone=o=>JSON.parse(JSON.stringify(o)),err=e=>alert("No se pudo guardar: "+((e&&(e.message||e.code))||e));
+let D={rutas:[],clientes:[],materiales:[],conductores:[],placas:[]},S={},U=null,tab="",curId=null,ptIdx=null,signed=false,foto=null,sel=new Set(),filt="todo",fsv="",open=new Set(),dl=null,pdet=null,scr="home",draft=null;try{draft=JSON.parse(localStorage.getItem('dr')||'null')}catch(e){}const clrD=()=>{draft=null;try{localStorage.removeItem('dr')}catch(e){}};const putD=o=>{try{localStorage.setItem('dr',JSON.stringify(o))}catch(e){}};
+
+// ===== CONFIGURACIÓN SUPABASE (Project Settings → API) =====
+const SUPA_URL="https://kdsbnnhxyqliytxgseye.supabase.co",SUPA_KEY="sb_publishable_DKo_JvLuv1pkGb9_uNfrIw_AbSLQ8HQ";
+const DOMINIO="rutas.app"; // el usuario "juan" se guarda internamente como juan@rutas.app (no se envían correos)
+let sb=null,cfgErr="";
+try{if(typeof supabase=="undefined")throw new Error("No cargó la librería de Supabase (revisa la conexión a internet).");
+  if(!/^https:\/\/.+\.supabase\.co/.test(SUPA_URL))throw new Error("SUPA_URL no está configurada: pega la Project URL en index.html.");
+  if(SUPA_KEY.startsWith("PEGA"))throw new Error("SUPA_KEY no está configurada: pega la clave anon public en index.html.");
+  sb=supabase.createClient(SUPA_URL,SUPA_KEY)}catch(e){cfgErr=e.message}
+dl={save:async({filename,data})=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type:"text/csv;charset=utf-8"}));a.download=filename;document.body.appendChild(a);a.click();a.remove()}};
+function mk(name){
+  let cb=()=>{},last="";
+  const load=async()=>{const{data,error}=await sb.from("docs").select("data").eq("coleccion",name);if(error){console.error(error);return}
+    const l=data.map(x=>x.data),j=JSON.stringify(l);if(j!==last){last=j;cb(l)}};
+  return{load,sub:f=>{cb=f;load()},
+    save:async r=>{const q=U&&U.rol=="cond"?sb.from("docs").update({data:r}).eq("coleccion",name).eq("id",r.id):sb.from("docs").upsert({coleccion:name,id:r.id,data:r});
+      const{error}=await q;if(error)throw error;await load()},
+    del:async id=>{const{error}=await sb.from("docs").delete().eq("coleccion",name).eq("id",id);if(error)alert("No se pudo eliminar: "+error.message);load()}};
+}
+let started=false;
+function startData(){
+  if(started){Object.values(S).forEach(s=>s.load());return}started=true;
+  ["rutas","clientes","materiales","placas"].forEach(n=>{S[n]=mk(n);
+    S[n].sub(l=>{D[n]=l.sort((a,b)=>n=="rutas"?(b.num||0)-(a.num||0):(a.creado||0)-(b.creado||0));renderAll()})});
+  sb.channel("docs").on("postgres_changes",{event:"*",schema:"public",table:"docs"},()=>Object.values(S).forEach(s=>s.load())).subscribe();
+  setInterval(()=>{if(!document.hidden)Object.values(S).forEach(s=>s.load())},20000);
+}
+async function afterLogin(user){
+  const{data,error}=await sb.from("perfiles").select("nombre,rol").eq("uid",user.id).maybeSingle();
+  if(error||!data){alert("Tu usuario no tiene perfil asignado"+(error?" (error: "+error.message+")":"")+". Ejecuta asignar_perfil en el SQL Editor.");await sb.auth.signOut();return}
+  U={rol:data.rol,nombre:String(data.nombre).toUpperCase()};startData();enter();
+}
+async function init(){if(!sb){$("#lerr").textContent="Configuración: "+cfgErr;return}const{data:{session}}=await sb.auth.getSession();if(session)await afterLogin(session.user)}
+function fillLogin(){}
+$("#lgo").onclick=async()=>{if(!sb){alert("Configuración: "+cfgErr);return}const{data,error}=await sb.auth.signInWithPassword({email:$("#lu").value.trim().toLowerCase().replace(/\s+/g,"")+"@"+DOMINIO,password:$("#lp").value});
+  if(error){alert("No se pudo ingresar: "+error.message);return}await afterLogin(data.user)};
+$("#out").onclick=async()=>{await sb.auth.signOut();U=null;ptIdx=null;$("#app").classList.add("hide");$("#login").classList.remove("hide");$("#lp").value=""};
+function renderAll(){if(!U){fillLogin();return}if(U.rol=="prog"&&pdet){const r=D.rutas.find(x=>x.id==pdet);if(!r){pdet=null;setTab(tab)}else{V(win(r,false));wire()}return}const t=T[tab];t&&t.f&&t.f()}
+
+function enter(){$("#login").classList.add("hide");$("#app").classList.remove("hide");
+  const d=hoy().split("-");$("#hd").textContent=d[2]+"-"+d[1]+"-"+d[0];$("#hu").textContent=U.nombre;
+  const tabs=U.rol=="prog"?[["rutas","Programar"],["ejec","En ejecución"],["hist","Histórico"],["mat","Materiales"],["cli","Clientes"],["pla","Placas"],["rep","Reporte"]]:[];
+  $("#nav").innerHTML=tabs.map(t=>`<button data-t="${t[0]}">${t[1]}</button>`).join("");
+  document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>setTab(b.dataset.t));
+  setTab(U.rol=="prog"?"rutas":"cond")}
+function setTab(t){tab=t;ptIdx=null;pdet=null;scr="home";document.querySelectorAll("[data-t]").forEach(b=>b.className=b.dataset.t==t?"on":"");T[t].b();T[t].f()}
+
+// ---------- utilidades de rutas ----------
+const matsDe=s=>D.materiales.filter(m=>m.servicio==s).map(m=>m.nombre);
+const ultima=cod=>{let u="";D.rutas.forEach(r=>r.puntos.forEach(p=>{if(p.cod==cod&&p.estado=="cerrado"&&(p.cierre||"")>u)u=p.cierre}));return u?u.slice(0,10):""};
+const kgR=r=>+r.puntos.reduce((s,p)=>s+(p.total||0),0).toFixed(1);
+function rtable(r,mine){
+  return `<div class="sc"><table><tr><th>Codigo SEA</th><th>Nit</th><th>Razon Social</th><th>Ciudad</th><th>Direccion</th><th>Frecuencia</th><th>Dias</th><th>Estado Cartera</th><th>Autorizado Cartera</th><th>Ultima Recolección</th><th>Estado</th><th>Detalle</th></tr>`+
+  r.puntos.map((p,i)=>{const c=D.clientes.find(x=>x.cod==p.cod)||{};
+   return `<tr><td>${esc(p.cod)}</td><td>${esc(p.nit)}</td><td>${esc(p.razon)}</td><td>${esc(p.ciudad)}</td><td>${esc(p.dir)}</td><td>${esc(c.frec)}</td><td>${esc(c.dias)}</td><td>${esc(c.cartera)}</td><td>${esc(c.aut)}</td><td>${esc(ultima(p.cod))}</td>
+   <td>${p.estado=="pendiente"&&mine&&!r.cerrada?`<button class="btn s o" data-pt="${r.id}|${i}">ABORDAR</button>`:`<span class="tag ${TG[p.estado]||""}">${ST[p.estado]}</span>`}</td>
+   <td>${p.total?p.total+" kg":""}${p.obs?`<div class="mu">${esc(p.obs)}</div>`:""}${p.foto?`<img class="f" style="max-width:70px" src="${p.foto}">`:""}</td></tr>`}).join("")+`</table></div>`}
+const rstate=r=>r.cerrada?"FINALIZADA":r.conductor?"EN EJECUCIÓN":"PENDIENTE POR ASIGNAR";
+function rcards(list){return list.map(r=>`<div class="rt"><div class="rh" data-go="${r.id}"><div>Ruta: <b>${r.num}</b> <span class="or">${esc(r.placa)}</span> :: ${esc(r.fecha)}
+  <div class="mu">${esc(r.tipo)} · ${r.conductor?"Conductor: "+esc(r.conductor):"Sin asignar"} · ${rstate(r)} · Creado:${esc(r.creadoTxt)}</div></div><span>›</span></div></div>`).join("")||'<div class="mu">Sin rutas.</div>'}
+function win(r,c){
+  const mine=c&&r.conductor==U.nombre,libre=!r.conductor&&!r.cerrada,pend=r.puntos.some(p=>p.estado=="pendiente");
+  return `<button class="btn s d" data-back>← Volver</button><h1>Ruta <b>${r.num}</b> ${esc(r.placa)}</h1><div class="mu" style="text-align:center">${esc(r.tipo)} · ${esc(r.fecha)} · ${r.conductor?"Conductor: "+esc(r.conductor):"Sin asignar"} · ${rstate(r)}</div>`+rtable(r,mine)+
+  (c&&libre?`<button class="btn o" data-abordar="${r.id}">ABORDAR RUTA</button>`:"")+
+  (c&&r.conductor&&!mine&&!r.cerrada?`<div class="mu">Esta ruta fue abordada por otro conductor.</div>`:"")+
+  (mine&&!r.cerrada&&!pend?`<button class="btn" data-term="${r.id}">TERMINAR RUTA</button>`:"")+
+  (!c?`<button class="btn r" data-del="${r.id}">Eliminar ruta</button>`:"")}
+function wire(){
+  document.querySelectorAll("[data-go]").forEach(e=>e.onclick=()=>{if(U.rol=="prog")pdet=e.dataset.go;else{curId=e.dataset.go;scr="ruta"}renderAll()});
+  document.querySelectorAll("[data-back]").forEach(e=>e.onclick=()=>{if(U.rol=="prog"){setTab(tab);return}const r=D.rutas.find(x=>x.id==curId);scr=r&&!r.conductor&&!r.cerrada?"list":"home";renderAll()});
+  document.querySelectorAll("[data-del]").forEach(e=>e.onclick=()=>{if(confirm("¿Eliminar la ruta?")){S.rutas.del(e.dataset.del);setTab(tab)}});
+  document.querySelectorAll("[data-abordar]").forEach(e=>e.onclick=async()=>{const r=clone(D.rutas.find(x=>x.id==e.dataset.abordar));
+    if(r.conductor){alert("La ruta ya fue abordada por "+r.conductor);return}
+    if(act(r.tipo)){alert("Ya tienes una ruta activa en "+r.tipo);return}
+    r.conductor=U.nombre;r.tomada=new Date().toISOString();try{await S.rutas.save(r)}catch(x){err(x)}});
+  document.querySelectorAll("[data-term]").forEach(e=>e.onclick=async()=>{if(!confirm("¿Terminar la ruta? Pasará al histórico."))return;
+    const r=clone(D.rutas.find(x=>x.id==e.dataset.term));r.cerrada=true;r.fin=new Date().toISOString();try{await S.rutas.save(r);scr="home";renderAll()}catch(x){err(x)}});
+  document.querySelectorAll("[data-pt]").forEach(e=>e.onclick=()=>{const[a,b]=e.dataset.pt.split("|");curId=a;openPt(+b)});
+}
+const lh=t=>`<h1>${t}</h1><button class="btn" data-f="hoy">Listar HOY</button><button class="btn o" data-f="todo">Listar todo</button>`;
+function lbind(){document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{filt=b.dataset.f;renderAll()})}
+const filtra=l=>l.filter(r=>(filt=="todo"||r.fecha==hoy())&&(!fsv||r.tipo==fsv));
+
+// ---------- pestañas ----------
+const T={};
+T.rutas={b(){sel.clear();V(`<div class="card"><h2>Programar ruta</h2><div class="row"><div><label>Fecha</label><input type="date" id="fecha" value="${hoy()}"></div><div><label>Placa</label><select id="placa"></select></div></div>
+ <label>Servicio</label><select id="tipo">${SERV.map(s=>`<option>${s}</option>`).join("")}</select><div id="prev" class="mu"></div>
+ <label>Clientes</label><div id="selC"></div><button class="btn" id="rev">Revisar y confirmar</button></div><div class="card hide" id="resumen"></div><div id="plist"></div>`);
+ $("#tipo").onchange=()=>T.rutas.f();
+ $("#rev").onclick=()=>{
+  const tipo=$("#tipo").value,mats=matsDe(tipo),pts=D.clientes.filter(c=>sel.has(c.id)),placa=$("#placa").value.trim().toUpperCase();
+  if(!placa||!pts.length){alert("Selecciona una placa (créalas en Placas) y al menos un cliente.");return}
+  if(!mats.length){alert("El servicio "+tipo+" no tiene materiales. Créalos en la pestaña Materiales.");return}
+  const b={id:"r"+Date.now(),num:Math.max(0,...D.rutas.map(r=>r.num||0))+1,fecha:$("#fecha").value,placa,tipo,mats,creado:Date.now(),creadoTxt:new Date().toLocaleString("sv-SE"),conductor:"",cerrada:false,
+   puntos:pts.map(c=>({cod:c.cod,nit:c.nit,razon:c.razon,ciudad:c.ciudad,dir:c.dir,estado:"pendiente"}))};
+  $("#resumen").innerHTML=`<h1>RECOLECCIÓN - <b>${esc(tipo)}</b></h1><div class="mu">${esc(placa)} · ${esc(b.fecha)}</div>
+   <table style="margin-top:8px"><tr><th>#</th><th>Residuo asignado</th></tr>${mats.map((m,i)=>`<tr><td>${i+1}</td><td>${esc(m)}</td></tr>`).join("")}</table>
+   <div class="sc"><table><tr><th>Código</th><th>Nit</th><th>Razón social</th><th>Ciudad</th><th>Dirección</th></tr>${b.puntos.map(p=>`<tr><td>${esc(p.cod)}</td><td>${esc(p.nit)}</td><td>${esc(p.razon)}</td><td>${esc(p.ciudad)}</td><td>${esc(p.dir)}</td></tr>`).join("")}</table></div>
+   <div class="row"><button class="btn o" id="rok">CONFIRMAR</button><button class="btn d" id="rno">CANCELAR</button></div>`;
+  $("#resumen").classList.remove("hide");
+  $("#rno").onclick=()=>$("#resumen").classList.add("hide");
+  $("#rok").onclick=async()=>{try{await S.rutas.save(b);sel.clear();$("#resumen").classList.add("hide");T.rutas.f()}catch(e){err(e)}}}},
+ f(){const m=matsDe($("#tipo").value);$("#prev").textContent="Residuos que se cargarán al operador ("+m.length+"): "+(m.join(", ")||"ninguno, créalos en Materiales");
+  $("#selC").innerHTML=D.clientes.map(c=>`<div class="chk"><input type="checkbox" data-sc="${c.id}" ${sel.has(c.id)?"checked":""}><div>${esc(c.razon)}<div class="mu">${esc(c.cod)} · ${esc(c.ciudad)} · ${esc(c.dir)}</div></div></div>`).join("")||'<div class="mu">Crea clientes en la pestaña Clientes.</div>';
+  document.querySelectorAll("[data-sc]").forEach(e=>e.onchange=()=>e.checked?sel.add(e.dataset.sc):sel.delete(e.dataset.sc));
+  const v=$("#placa").value;$("#placa").innerHTML=D.placas.map(p=>`<option>${esc(p.placa)}</option>`).join("");$("#placa").value=v;const l=D.rutas.filter(r=>!r.conductor&&!r.cerrada);$("#plist").innerHTML=`<h2>Pendientes por asignar (${l.length})</h2>`+rcards(l);wire()}};
+const lt=(t,fn)=>({b(){V(`<div id="lst"></div>`)},f(){const l=D.rutas.filter(fn);$("#lst").innerHTML=`<h2>${t} (${l.length})</h2>`+rcards(l);wire()}});
+T.ejec=lt("Rutas en ejecución",r=>r.conductor&&!r.cerrada);T.hist=lt("Histórico de rutas finalizadas",r=>r.cerrada);
+T.pla={b(){V(`<div class="card"><h2>Placas</h2><label>Placa</label><input id="pn" placeholder="ZNL256"><button class="btn" id="padd">Agregar placa</button></div><div class="card" id="pl"></div>`);
+ $("#padd").onclick=async()=>{const n=$("#pn").value.trim().toUpperCase();if(!n)return;try{await S.placas.save({id:"p"+Date.now(),placa:n,creado:Date.now()});$("#pn").value=""}catch(e){err(e)}}},
+ f(){$("#pl").innerHTML=D.placas.map(p=>`<div class="chk">${esc(p.placa)}<button class="btn s r" style="margin-left:auto" data-dp="${p.id}">Eliminar</button></div>`).join("")||'<div class="mu">Sin placas.</div>';
+  document.querySelectorAll("[data-dp]").forEach(b=>b.onclick=()=>S.placas.del(b.dataset.dp))}};
+
+T.mat={b(){V(`<div class="card"><h2>Materiales por línea de servicio</h2><div class="row"><div><label>Servicio</label><select id="ms">${SERV.map(s=>`<option>${s}</option>`).join("")}</select></div><div><label>Material</label><input id="mn"></div></div><button class="btn" id="madd">Agregar material</button></div><div id="mlist"></div>`);
+ $("#madd").onclick=async()=>{const n=$("#mn").value.trim();if(!n)return;try{await S.materiales.save({id:"m"+Date.now(),nombre:n.toUpperCase(),servicio:$("#ms").value,creado:Date.now()});$("#mn").value=""}catch(e){err(e)}}},
+ f(){$("#mlist").innerHTML=SERV.map(s=>`<div class="card"><h2>${s}</h2>`+(D.materiales.filter(m=>m.servicio==s).map(m=>`<div class="chk">${esc(m.nombre)}<button class="btn s r" style="margin-left:auto" data-dm="${m.id}">Eliminar</button></div>`).join("")||'<div class="mu">Sin materiales.</div>')+`</div>`).join("");
+  document.querySelectorAll("[data-dm]").forEach(b=>b.onclick=()=>S.materiales.del(b.dataset.dm))}};
+
+const CF=[["cod","Código SEA"],["nit","NIT"],["razon","Razón social"],["ciudad","Ciudad"],["dir","Dirección"],["frec","Frecuencia"],["dias","Días"],["cartera","Estado cartera"],["aut","Autorizado cartera"]];
+T.cli={b(){V(`<div class="card"><h2>Clientes / puntos</h2>${CF.map(f=>`<label>${f[1]}</label><input id="c_${f[0]}">`).join("")}<button class="btn" id="cadd">Agregar cliente</button></div><div class="card sc"><table><tr>${CF.map(f=>`<th>${f[1]}</th>`).join("")}<th></th></tr><tbody id="clist"></tbody></table></div>`);
+ $("#cadd").onclick=async()=>{const c={id:"c"+Date.now(),creado:Date.now()};CF.forEach(f=>c[f[0]]=$("#c_"+f[0]).value.trim());
+  if(!c.razon){alert("La razón social es obligatoria.");return}try{await S.clientes.save(c);CF.forEach(f=>$("#c_"+f[0]).value="")}catch(e){err(e)}}},
+ f(){$("#clist").innerHTML=D.clientes.map(c=>`<tr>${CF.map(f=>`<td>${esc(c[f[0]])}</td>`).join("")}<td><button class="btn s r" data-dc="${c.id}">✕</button></td></tr>`).join("");
+  document.querySelectorAll("[data-dc]").forEach(b=>b.onclick=()=>S.clientes.del(b.dataset.dc))}};
+
+T.con={b(){V(`<div class="card"><h2>Conductores</h2><div class="row"><div><label>Nombre</label><input id="nn"></div><div><label>Clave</label><input id="np" inputmode="numeric"></div></div><button class="btn" id="nadd">Agregar conductor</button></div><div class="card" id="nlist"></div>`);
+ $("#nadd").onclick=async()=>{const n=$("#nn").value.trim(),p=$("#np").value.trim();if(!n||!p){alert("Nombre y clave son obligatorios.");return}
+  try{await S.conductores.save({id:"u"+Date.now(),nombre:n,pin:p,creado:Date.now()});$("#nn").value=$("#np").value=""}catch(e){err(e)}}},
+ f(){$("#nlist").innerHTML=D.conductores.map(c=>`<div class="chk">${esc(c.nombre)}<button class="btn s r" style="margin-left:auto" data-du="${c.id}">Eliminar</button></div>`).join("")||'<div class="mu">Sin conductores.</div>';
+  document.querySelectorAll("[data-du]").forEach(b=>b.onclick=()=>S.conductores.del(b.dataset.du))}};
+
+// ---------- reporte ----------
+const rr=()=>D.rutas.filter(r=>(!$("#d1").value||r.fecha>=$("#d1").value)&&(!$("#d2").value||r.fecha<=$("#d2").value));
+const cnt=(r,e)=>r.puntos.filter(p=>p.estado==e).length;
+T.rep={b(){V(`<div class="card"><h2>Reporte de lo realizado</h2><div class="row"><div><label>Desde</label><input type="date" id="d1"></div><div><label>Hasta</label><input type="date" id="d2"></div></div><button class="btn o" id="csv">Descargar CSV (Excel)</button></div><div id="rep"></div>`);
+ $("#d1").onchange=$("#d2").onchange=()=>T.rep.f();
+ $("#csv").onclick=async()=>{
+  const q=v=>'"'+String(v==null?"":v).replace(/"/g,'""')+'"',k=v=>String(v).replace(".",","),rows=[["Ruta","Fecha","Placa","Conductor","Servicio","Código","NIT","Razón social","Ciudad","Dirección","Estado","Material","Kg","Obs. material","Quien entrega","Email","Obs. punto","Cierre"]];
+  rr().forEach(r=>r.puntos.forEach(p=>{const b=[r.num,r.fecha,r.placa,r.conductor,r.tipo,p.cod,p.nit,p.razon,p.ciudad,p.dir,ST[p.estado]];const t=[p.entrega,p.email,p.obs,p.cierre];
+   if(p.estado=="cerrado"&&p.items)Object.keys(p.items).forEach(m=>rows.push(b.concat([m,k(p.items[m].kg),p.items[m].obs],t)));else rows.push(b.concat(["","",""],t))}));
+  if(!dl){alert("La descarga no está disponible aquí.");return}
+  try{await dl.save({filename:"reporte_recoleccion.csv",data:"\ufeff"+rows.map(r=>r.map(q).join(";")).join("\n")})}catch(e){if(!e||e.code!="declined")err(e)}}},
+ f(){const l=rr(),tm={};l.forEach(r=>r.puntos.forEach(p=>p.items&&Object.keys(p.items).forEach(m=>tm[r.tipo+" · "+m]=(tm[r.tipo+" · "+m]||0)+p.items[m].kg)));
+  $("#rep").innerHTML=`<div class="card sc"><table><tr><th>Ruta</th><th>Fecha</th><th>Placa</th><th>Conductor</th><th>Servicio</th><th>Recol.</th><th>Ausentes</th><th>No term.</th><th>Pend.</th><th>Kg</th></tr>`+
+   l.map(r=>`<tr><td>${r.num}</td><td>${esc(r.fecha)}</td><td>${esc(r.placa)}</td><td>${esc(r.conductor||"—")}</td><td>${esc(r.tipo)}</td><td>${cnt(r,"cerrado")}</td><td>${cnt(r,"ausente")}</td><td>${cnt(r,"no_terminado")}</td><td>${cnt(r,"pendiente")}</td><td>${kgR(r)}</td></tr>`).join("")+
+   `<tr><th colspan="9">Total kg</th><th>${+l.reduce((s,r)=>s+kgR(r),0).toFixed(1)}</th></tr></table></div><div class="card sc"><table><tr><th>Material</th><th>Kg</th></tr>`+
+   Object.keys(tm).sort().map(m=>`<tr><td>${esc(m)}</td><td>${+tm[m].toFixed(1)}</td></tr>`).join("")+`</table></div>`}};
+
+// ---------- conductor ----------
+const act=s=>D.rutas.find(r=>r.conductor==U.nombre&&!r.cerrada&&r.tipo==s);
+T.cond={b(){V('<div id="clst"></div>')},
+ f(){const el=$("#clst");
+  if(draft&&el){const r=D.rutas.find(x=>x.id==draft.rid);if(r){const d=draft;draft=null;curId=d.rid;scr="ruta";ptIdx=d.i;openAlt(clone(r),d.i,d.kind);$("#ob").value=d.ob||"";putD(d);return}}
+  if(ptIdx!==null||!el)return;
+  if(scr=="home"){
+   el.innerHTML="<h1>Rutas Programadas</h1>"+SERV.map(s=>`<button class="btn ${act(s)?"o":""}" data-sv="${s}">${s}${act(s)?" · RUTA ACTIVA":""}</button>`).join("");
+   document.querySelectorAll("[data-sv]").forEach(b=>b.onclick=()=>{fsv=b.dataset.sv;const a=act(fsv);if(a){curId=a.id;scr="ruta"}else scr="list";T.cond.f()})}
+  else if(scr=="list"){const l=filtra(D.rutas.filter(r=>!r.conductor&&!r.cerrada&&r.tipo==fsv));
+   el.innerHTML=`<button class="btn s d" data-back>← Volver</button>`+lh("Rutas Programadas - <b>"+fsv+"</b>")+`<p><b>Resultado total: ${l.length} - ${fsv}</b></p>`+rcards(l);lbind();wire()}
+  else{const r=D.rutas.find(x=>x.id==curId);if(!r){scr="home";T.cond.f();return}el.innerHTML=win(r,true);wire()}
+  if(scr=="home"){}}};
+
+// ---------- diligenciar punto ----------
+async function saveRuta(r){try{await S.rutas.save(r)}catch(e){err(e);return}clrD();ptIdx=null;scr="ruta";T.cond.b();T.cond.f()}
+function head(r,p){return `<h1>RECOLECCIÓN - <b>${esc(r.tipo)}</b></h1><div><button class="sq r" id="aus">! Cliente ausente</button><button class="sq" style="background:var(--or)" id="nt">! No terminar</button> <b style="color:#2a9d3a;font-size:12px">${esc(p.razon)}</b><div class="mu">${esc(p.cod)} · NIT ${esc(p.nit)} · ${esc(p.ciudad)} · ${esc(p.dir)}</div></div>`}
+function openPt(i){
+  const r=clone(D.rutas.find(x=>x.id==curId)),p=r.puntos[i];ptIdx=i;signed=false;
+  V(head(r,p)+`<p class="mu">Resultados: ${r.mats.length} Residuos asignados</p><table><tr><th>Residuo</th><th>Cant (Kg)</th><th>Observación</th></tr>`+
+   r.mats.map((m,k)=>`<tr><td>${esc(m)}</td><td><input type="number" inputmode="decimal" step="0.1" min="0" data-kg="${k}"></td><td><input data-ob="${k}"></td></tr>`).join("")+
+   `<tr><th>Total Kg</th><th colspan="2" id="tot">0</th></tr></table>
+   <div style="text-align:center;margin:10px 0 4px"><a href="#" id="clr" style="color:#2a9d3a;font-weight:700">Limpiar Firma</a></div><canvas id="cv"></canvas>
+   <label>* Confirmación Datos del Cliente</label><input id="ent" placeholder="Quien Entrega"><label>Email Principal</label><input id="mail" type="email">
+   <button class="btn" id="cons">CONSOLIDAR</button><button class="btn d" id="canc">✕</button>`);
+  const upd=()=>{$("#tot").textContent=[...document.querySelectorAll("[data-kg]")].reduce((s,e)=>s+(parseFloat(e.value)||0),0).toFixed(1)};
+  document.querySelectorAll("[data-kg]").forEach(e=>e.oninput=upd);
+  const cv=$("#cv"),dpr=window.devicePixelRatio||1;cv.width=cv.offsetWidth*dpr;cv.height=150*dpr;
+  const x=cv.getContext("2d");x.scale(dpr,dpr);x.lineWidth=2;x.lineCap="round";x.strokeStyle="#111";
+  let d=false;const pos=e=>{const b=cv.getBoundingClientRect();return[e.clientX-b.left,e.clientY-b.top]};
+  cv.onpointerdown=e=>{d=true;signed=true;cv.setPointerCapture(e.pointerId);const[a,b]=pos(e);x.beginPath();x.moveTo(a,b)};
+  cv.onpointermove=e=>{if(!d)return;const[a,b]=pos(e);x.lineTo(a,b);x.stroke()};cv.onpointerup=()=>{d=false};
+  $("#clr").onclick=e=>{e.preventDefault();x.clearRect(0,0,cv.width,cv.height);signed=false};
+  $("#canc").onclick=()=>{clrD();ptIdx=null;T.cond.b();T.cond.f()};
+  $("#aus").onclick=()=>openAlt(r,i,"ausente");$("#nt").onclick=()=>openAlt(r,i,"no_terminado");
+  $("#cons").onclick=async()=>{
+    const items={};let total=0;
+    r.mats.forEach((m,k)=>{const kg=parseFloat(document.querySelector(`[data-kg="${k}"]`).value)||0;if(kg>0){items[m]={kg,obs:document.querySelector(`[data-ob="${k}"]`).value.trim()};total+=kg}});
+    if(!total){alert("Registra el peso de al menos un residuo.");return}
+    if(!$("#ent").value.trim()){alert("Indica quién entrega.");return}
+    if(!signed){alert("Falta la firma.");return}
+    const t=document.createElement("canvas");t.width=300;t.height=100;t.getContext("2d").drawImage(cv,0,0,300,100);
+    Object.assign(p,{estado:"cerrado",items,total:+total.toFixed(1),entrega:$("#ent").value.trim(),email:$("#mail").value.trim(),firma:t.toDataURL("image/png"),cierre:new Date().toISOString()});
+    await saveRuta(r)}
+}
+function toUrl(f,max=640){return new Promise((res,rej)=>{const fr=new FileReader();fr.onerror=()=>rej(new Error("No se pudo leer la imagen"));
+  fr.onload=()=>{const im=new Image();im.onerror=()=>rej(new Error("Imagen no válida"));im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");
+   c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.6))};im.src=fr.result};fr.readAsDataURL(f)})}
+function openAlt(r,i,kind){
+  const p=r.puntos[i],aus=kind=="ausente";foto=null;
+  V(head(r,p)+`<div class="card" style="margin-top:10px"><h2>${aus?"CLIENTE AUSENTE (se visitó, no se recolectó)":"NO TERMINAR (no se visitó)"}</h2>
+   ${aus?`<label>Foto</label><label class="btn s d" style="color:#fff;display:inline-block;margin-right:6px;font-size:13px">Tomar foto<input type="file" accept="image/*" capture="environment" style="display:none" data-ph></label><label class="btn s d" style="color:#fff;display:inline-block;font-size:13px">Cargar de galería<input type="file" accept="image/*" style="display:none" data-ph></label><div class="mu" style="margin-top:6px">Si al abrir la cámara la página se recarga, lo escrito se conserva; vuelve a tomar la foto.</div><div><img id="pv" class="f hide"></div>`:""}
+   <label>Observación (obligatoria)</label><textarea id="ob"></textarea></div>
+   <div class="row"><button class="btn o" id="ok">CONFIRMAR</button><button class="btn d" id="vol">CANCELAR</button></div>`);
+  putD({rid:curId,i,kind,ob:""});$("#ob").oninput=()=>putD({rid:curId,i,kind,ob:$("#ob").value});
+  document.querySelectorAll("[data-ph]").forEach(inp=>inp.onchange=async e=>{const f=e.target.files[0];if(!f)return;
+    try{foto=await toUrl(f);$("#pv").src=foto;$("#pv").classList.remove("hide")}catch(x){alert(x.message)}});
+  $("#vol").onclick=()=>{clrD();openPt(i)};
+  $("#ok").onclick=async()=>{const ob=$("#ob").value.trim();
+    if(!ob){alert("La observación es obligatoria.");return}
+    if(aus&&!foto&&!confirm("No hay foto cargada. ¿Continuar sin foto?"))return
+    Object.assign(p,{estado:kind,obs:ob,cierre:new Date().toISOString()});if(aus)p.foto=foto;await saveRuta(r)}
+}
+init();
+</script></body></html>
