@@ -72,7 +72,7 @@ const clone=o=>JSON.parse(JSON.stringify(o)),err=e=>alert("No se pudo guardar: "
 let D={rutas:[],clientes:[],materiales:[],conductores:[],placas:[],log:[]},S={},U=null,tab="",curId=null,ptIdx=null,signed=false,foto=null,sel=new Set(),filt="todo",fsv="",open=new Set(),dl=null,pdet=null,scr="home",draft=null;try{draft=JSON.parse(localStorage.getItem('dr')||'null')}catch(e){}const clrD=()=>{draft=null;try{localStorage.removeItem('dr')}catch(e){}};const putD=o=>{try{localStorage.setItem('dr',JSON.stringify(o))}catch(e){}};
 
 // ===== CONFIGURACIÓN SUPABASE (Project Settings → API) =====
-const SUPA_URL="PEGA_AQUI_TU_PROJECT_URL",SUPA_KEY="PEGA_AQUI_TU_ANON_PUBLIC_KEY";
+const SUPA_URL="https://kdsbnnhxyqliytxgseye.supabase.co",SUPA_KEY="sb_publishable_DKo_JvLuv1pkGb9_uNfrIw_AbSLQ8HQ";
 const DOMINIO="rutas.app"; // el usuario "juan" se guarda internamente como juan@rutas.app (no se envían correos)
 let sb=null,cfgErr="";
 try{if(typeof supabase=="undefined")throw new Error("No cargó la librería de Supabase (revisa la conexión a internet).");
