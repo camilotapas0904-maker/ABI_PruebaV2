@@ -57,6 +57,65 @@ body::before{content:"";position:fixed;inset:0;background:url(data:image/png;bas
 .sec.comp{border-left-color:var(--dk);margin-top:28px}
 .st{font-size:12px;letter-spacing:3px;font-weight:700;color:var(--mu);margin:6px 0 10px}
 .sst{font-size:11px;color:var(--mu);margin:10px 0 2px;text-transform:uppercase;letter-spacing:1px}
+/* ===== Módulo auditoría de vehículos ===== */
+:root{--okc:#2e7d32;--cdc:#b26a00;--noc:#c0392b;--inc:#5d6d7e;--fr:#1a73e8}
+:where(button,input,select,textarea,summary,[role=button]):focus-visible{outline:3px solid var(--fr);outline-offset:2px}
+.md{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:60;overflow:auto;padding:8px}.mc{background:var(--bg);max-width:560px;margin:10px auto;padding:14px;border:1px solid var(--bd)}
+.ico{flex:none;vertical-align:-3px}
+.sv{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;border:1px solid currentColor;margin-left:auto}
+.sv-c{color:var(--noc)}.sv-m{color:var(--cdc)}.sv-n{color:var(--mu)}
+.as{border:1px solid var(--bd);margin:12px 0;background:var(--bg)}
+.as>summary{display:flex;justify-content:space-between;gap:8px;align-items:center;min-height:48px;padding:8px 12px;background:var(--bg2);font-weight:700;font-size:12px;letter-spacing:.5px;cursor:pointer;position:sticky;top:0;z-index:5;border-bottom:1px solid var(--bd)}
+.cnt{font-weight:700;color:var(--mu);white-space:nowrap}.cnt.done{color:var(--okc)}.cnt.hasnc{color:var(--noc)}
+.ai{padding:12px;border-top:1px solid var(--bd);border-left:5px solid transparent}
+.ai.ok{border-left-color:var(--okc)}.ai.nc{border-left-color:var(--noc);background:rgba(192,57,43,.05)}.ai.na{border-left-color:var(--inc)}.ai.er{outline:2px solid var(--noc);outline-offset:-2px}
+.ah{display:flex;gap:8px;align-items:center}.ah .no{font-size:12px;color:var(--mu);min-width:22px}.ah b{font-size:15px}
+.ac{font-size:13px;color:var(--mu);margin:4px 0 10px;line-height:1.45}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.seg button{min-height:48px;border:2px solid var(--bd);background:var(--bg);color:var(--tx);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px;touch-action:manipulation;cursor:pointer;transition:background-color .15s,border-color .15s}
+.seg button:active{filter:brightness(.92)}
+.seg button.on.sC{background:var(--okc);border-color:var(--okc);color:#fff}.seg button.on.sNC{background:var(--noc);border-color:var(--noc);color:#fff}.seg button.on.sNA{background:var(--inc);border-color:var(--inc);color:#fff}
+.seg button:disabled{opacity:.45;cursor:not-allowed}
+.ev,.dc,.dn{margin-top:10px;padding:10px;border:1px dashed var(--bd);background:var(--bg2)}
+.dc.er{border-color:var(--noc)}
+.ev textarea,.dn textarea{min-height:76px}
+.em{color:var(--noc);font-size:13px;font-weight:700;margin:6px 0}
+.mu{line-height:1.4}
+.th-w{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.th{position:relative;display:inline-block}.th img{width:84px;height:84px;object-fit:cover;border:1px solid var(--bd);background:var(--bg2);display:block;cursor:zoom-in}
+.th i{position:absolute;left:0;bottom:0;background:rgba(0,0,0,.65);color:#fff;font-size:10px;font-style:normal;padding:1px 4px}
+.th .x{position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;border:0;background:var(--noc);color:#fff;display:flex;align-items:center;justify-content:center;padding:0}
+.th.s img{width:44px;height:44px}
+.btn.s.ph{display:inline-flex;gap:6px;align-items:center;min-height:44px;padding:8px 14px;font-size:14px}
+.btn.s.r,.btn.s.d{min-height:44px;padding:8px 14px;font-size:14px}
+.dr{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.dr input{width:auto;min-height:44px;flex:1 1 150px}
+.dv{display:inline-flex;gap:4px;align-items:center;font-size:12px;font-weight:700;padding:3px 8px;border-radius:10px;border:1px solid currentColor}
+.dv.ok{color:var(--okc)}.dv.warn{color:var(--cdc)}.dv.bad{color:var(--noc)}
+.vv{display:inline-flex;gap:4px;align-items:center;font-size:12px;font-weight:700;padding:3px 8px;border-radius:4px;color:#fff}
+.vv.apto{background:var(--okc)}.vv.cond{background:var(--cdc)}.vv.no{background:var(--noc)}.vv.inc{background:var(--inc)}
+.rd{color:var(--noc)}.or2{color:var(--cdc)}
+.abar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--bg);border-top:2px solid var(--bd);padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));max-width:820px;margin:0 auto}
+.abar .pg{height:6px;background:var(--bd);border-radius:3px;overflow:hidden}.abar .pg i{display:block;height:100%;width:0;background:var(--gr);transition:width .25s}
+.abar .tx{font-size:12px;margin:6px 0;line-height:1.5}.abar .btn{margin:0;padding:12px;font-size:17px;min-height:48px}.abar .btn:disabled{opacity:.6}
+.vban{display:flex;gap:12px;align-items:center;padding:14px;margin:12px 0;color:#fff;font-size:15px}.vban b{font-size:17px;display:block}
+.vban.apto{background:var(--okc)}.vban.cond{background:var(--cdc)}.vban.no{background:var(--noc)}.vban.inc{background:var(--inc)}
+.ck2{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-size:14px;color:var(--tx)}.ck2 input{width:24px;height:24px;flex:none;margin:0}
+#scv{width:100%;height:150px;border:2px dashed var(--mu);background:#fff;touch-action:none;display:block}
+.lnk{color:#2a9d3a;font-weight:700;display:inline-block;padding:8px}
+.atabs{display:flex;gap:4px;margin:8px 0 12px;overflow-x:auto}.atabs button{flex:1;min-height:48px;padding:0 12px;border:0;border-bottom:3px solid transparent;background:none;color:var(--tx);font-size:14px;white-space:nowrap}.atabs button.on{border-color:var(--or);font-weight:700}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0}.kpi .k{padding:10px 4px;text-align:center;color:#fff;font-size:11px}.kpi .k b{display:block;font-size:24px;font-weight:300}
+.kpi .apto{background:var(--okc)}.kpi .cond{background:var(--cdc)}.kpi .no{background:var(--noc)}.kpi .inc{background:var(--inc)}
+.fl{border:1px solid var(--bd);border-left:6px solid var(--inc);padding:10px;margin-bottom:8px}.fl.apto{border-left-color:var(--okc)}.fl.cond{border-left-color:var(--cdc)}.fl.no{border-left-color:var(--noc)}
+.fh{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:4px}.fh b{font-size:17px}.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+tr.rnc td{background:rgba(192,57,43,.08)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:380px){.seg button span{font-size:12px}.kpi .k{font-size:10px}}
+@media print{.bar,nav,.btn,.atabs,#adb,body::before{display:none!important}.as,.card{break-inside:avoid}}
+
+#aw .btn:not(.s):not(.o):not(.r),#aud .btn:not(.s):not(.o):not(.r),#clk .btn:not(.s):not(.o):not(.r):not(.d),.abar .btn{background:var(--dk)}
+#aw .btn.s.o,#aw .btn.ph,#aud .btn.s.o,#clk .btn.s.o{color:#1b1b1b}
+.vban.hide{display:none}
+.seg button span{line-height:1.1}
 </style></head><body>
 <div id="login"><main><div class="card" style="margin-top:30px"><h1>Rutas de <b>recolección</b></h1>
 <label>Usuario</label><input id="lu" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false"><label>Clave</label><input id="lp" type="password" autocomplete="current-password">
@@ -69,10 +128,10 @@ const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",
 const SERV=["APROVECHABLE","BIOLÓGICO","INDUSTRIAL"],ST={pendiente:"Pendiente",cerrado:"Recolectado",ausente:"Cliente ausente",no_terminado:"No terminado"},TG={cerrado:"ok",ausente:"rj",no_terminado:"nj"};
 const hoy=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 const clone=o=>JSON.parse(JSON.stringify(o)),err=e=>alert("No se pudo guardar: "+((e&&(e.message||e.code))||e));
-let D={rutas:[],clientes:[],materiales:[],conductores:[],placas:[],log:[]},S={},U=null,tab="",curId=null,ptIdx=null,signed=false,foto=null,sel=new Set(),filt="todo",fsv="",open=new Set(),dl=null,pdet=null,scr="home",draft=null;try{draft=JSON.parse(localStorage.getItem('dr')||'null')}catch(e){}const clrD=()=>{draft=null;try{localStorage.removeItem('dr')}catch(e){}};const putD=o=>{try{localStorage.setItem('dr',JSON.stringify(o))}catch(e){}};
+let D={rutas:[],clientes:[],materiales:[],conductores:[],placas:[],log:[],auditorias:[]},S={},U=null,tab="",curId=null,ptIdx=null,signed=false,foto=null,sel=new Set(),filt="todo",fsv="",open=new Set(),dl=null,pdet=null,scr="home",draft=null;try{draft=JSON.parse(localStorage.getItem('dr')||'null')}catch(e){}const clrD=()=>{draft=null;try{localStorage.removeItem('dr')}catch(e){}};const putD=o=>{try{localStorage.setItem('dr',JSON.stringify(o))}catch(e){}};
 
 // ===== CONFIGURACIÓN SUPABASE (Project Settings → API) =====
-const SUPA_URL="https://kdsbnnhxyqliytxgseye.supabase.co",SUPA_KEY="sb_publishable_DKo_JvLuv1pkGb9_uNfrIw_AbSLQ8HQ";
+const SUPA_URL="PEGA_AQUI_TU_PROJECT_URL",SUPA_KEY="PEGA_AQUI_TU_ANON_PUBLIC_KEY";
 const DOMINIO="rutas.app"; // el usuario "juan" se guarda internamente como juan@rutas.app (no se envían correos)
 let sb=null,cfgErr="";
 try{if(typeof supabase=="undefined")throw new Error("No cargó la librería de Supabase (revisa la conexión a internet).");
@@ -88,9 +147,9 @@ function mk(name){
   return{load,sub:f=>{cb=f;load()},
     save:async r=>{const cond=U&&U.rol=="cond",nuevo=!(D[name]||[]).some(x=>x.id==r.id);
       const row={coleccion:name,id:r.id,data:r};
-      const q=name=="log"?sb.from("docs").insert(row):cond?sb.from("docs").update({data:r}).eq("coleccion",name).eq("id",r.id):sb.from("docs").upsert(row);
+      const q=name=="log"?sb.from("docs").insert(row):cond&&name!="auditorias"?sb.from("docs").update({data:r}).eq("coleccion",name).eq("id",r.id):sb.from("docs").upsert(row);
       const{error}=await q;if(error)throw error;
-      if(name!="log"&&name!="rutas")logE(nuevo?"Creado":"Actualizado",name+": "+nm(r));
+      if(name!="log"&&name!="rutas"&&name!="auditorias")logE(nuevo?"Creado":"Actualizado",name+": "+nm(r));
       if(name!="log")await load()},
     del:async id=>{const x=(D[name]||[]).find(y=>y.id==id);const{error}=await sb.from("docs").delete().eq("coleccion",name).eq("id",id);
       if(error)alert("No se pudo eliminar: "+error.message);else if(name!="rutas")logE("Eliminado",name+": "+nm(x));load()}};
@@ -101,7 +160,7 @@ function logE(accion,detalle,ruta){if(!U)return Promise.resolve();
 let started=false;
 function startData(){
   if(started){Object.values(S).forEach(s=>s.load());return}started=true;
-  (U.rol=="prog"?["rutas","clientes","materiales","placas","log"]:["rutas","clientes","materiales","placas"]).forEach(n=>{S[n]=mk(n);
+  (U.rol=="prog"?["rutas","clientes","materiales","placas","auditorias","log"]:["rutas","clientes","materiales","placas","auditorias"]).forEach(n=>{S[n]=mk(n);
     S[n].sub(l=>{D[n]=l.sort((a,b)=>n=="rutas"?(b.num||0)-(a.num||0):n=="log"?String(b.ts).localeCompare(String(a.ts)):(a.creado||0)-(b.creado||0));renderAll()})});
   sb.channel("docs").on("postgres_changes",{event:"*",schema:"public",table:"docs"},()=>Object.values(S).forEach(s=>s.load())).subscribe();
   setInterval(()=>{if(!document.hidden)Object.values(S).forEach(s=>s.load())},20000);
@@ -138,7 +197,7 @@ function rtable(r,mine,op){
   return `<div class="sc"><table><tr>${ck?"<th></th>":""}<th>Codigo SEA</th><th>Nit</th><th>Razon Social</th><th>Ciudad</th><th>Direccion</th><th>Frecuencia</th><th>Dias</th><th>Estado Cartera</th><th>Autorizado Cartera</th><th>Ultima Recolección</th>${op?"":"<th>Estado</th><th>Detalle</th>"}</tr>`+
   rows.map(x=>{const p=x[0],i=x[1],c=D.clientes.find(z=>z.cod==p.cod)||{};
    return `<tr>${ck?`<td><button class="ck ${r.iniciada&&!r.cerrada?"on":""}" data-pt="${r.id}|${i}" title="Diligenciar">✓</button></td>`:""}<td>${esc(p.cod)}</td><td>${esc(p.nit)}</td><td>${esc(p.razon)}</td><td>${esc(p.ciudad)}</td><td>${esc(p.dir)}</td><td>${esc(c.frec)}</td><td>${esc(c.dias)}</td><td>${esc(c.cartera)}</td><td>${esc(c.aut)}</td><td>${esc(ultima(p.cod))}</td>`+
-   (op?"":`<td><span class="tag ${TG[p.estado]||""}">${ST[p.estado]}</span></td><td>${p.total?p.total+" kg":""}${p.obs?`<div class="mu">${esc(p.obs)}</div>`:""}${p.foto?`<img class="f" style="max-width:70px" src="${p.foto}">`:""}</td>`)+`</tr>`}).join("")+`</table></div>`}
+   (op?"":`<td><span class="tag ${TG[p.estado]||""}">${ST[p.estado]}</span></td><td>${p.total?p.total+" kg":""}${p.obs?`<div class="mu">${esc(p.obs)}</div>`:""}${p.foto?`<img class="f" style="max-width:70px" src="${p.foto}">${p.fotoTs?`<div class="mu">Foto: ${esc(hm(p.fotoTs))}</div>`:""}`:""}</td>`)+`</tr>`}).join("")+`</table></div>`}
 const rstate=r=>r.cerrada?"FINALIZADA":r.conductor?"EN EJECUCIÓN":"PENDIENTE POR ASIGNAR";
 function rcards(list){return list.map(r=>`<div class="rt"><div class="rh" data-go="${r.id}"><div>Ruta: <b>${r.num}</b> <span class="or">${esc(r.placa)}</span> :: ${esc(r.fecha)}
   <div class="mu">${esc(r.tipo)} · ${r.conductor?"Conductor: "+esc(r.conductor):"Sin asignar"} · ${rstate(r)}${r.iniciada?" · Iniciada "+esc(hm(r.iniciada)):""} · Creado:${esc(r.creadoTxt)}</div></div><span>›</span></div></div>`).join("")||'<div class="mu">Sin rutas.</div>'}
@@ -186,7 +245,7 @@ T.home={b(){V(`<h1 id="ht"></h1><div class="sec"><div class="st">PROGRAMACIÓN</
   $("#hb").innerHTML=B("rutas","var(--ol)","Planificador Ruta")+B("sin","var(--or)","Rutas sin asignar",cntR(r=>!r.conductor&&!r.cerrada))+B("ejec","var(--gr)","Ruta en Ejecución",cntR(r=>r.conductor&&!r.cerrada))+B("hist","var(--dk)","Ruta Histórico");
   const C=x=>`<button class="big sm" style="background:#5d6d7e" data-g2="${x[0]}">${x[1]}</button>`;
   $("#hm2").innerHTML=[["mat","Materiales"],["cli","Clientes"],["pla","Placas"]].map(C).join("");
-  $("#hm3").innerHTML=[["rep","Reporte"],["bit","Bitácora"]].map(C).join("");
+  $("#hm3").innerHTML=[["aud","Auditoría vehículos"],["rep","Reporte"],["bit","Bitácora"]].map(C).join("");
   document.querySelectorAll("[data-ps]").forEach(b=>b.onclick=()=>{psv=b.dataset.ps;T.home.f()});
   document.querySelectorAll("[data-g2]").forEach(b=>b.onclick=()=>setTab(b.dataset.g2))}};
 
@@ -197,6 +256,7 @@ T.rutas={b(){sel.clear();V(`<h1>Planificador Ruta</h1><div class="card" id="nuev
  $("#rev").onclick=()=>{
   const tipo=$("#tipo").value,mats=matsDe(tipo),pts=D.clientes.filter(c=>sel.has(c.id)),placa=$("#placa").value.trim().toUpperCase();
   if(!placa||!pts.length){alert("Selecciona una placa (créalas en Placas) y al menos un cliente.");return}
+  {const pe=D.placas.find(x=>x.placa==placa);if(pe&&pe.tipo){const e=estPlaca(placa);if(e.key=="no"&&!confirm("ATENCIÓN: "+placa+" está "+e.txt+" según el chequeo de hoy. ¿Programar la ruta de todos modos?"))return;if(e.key=="sin"&&!confirm(placa+" no tiene chequeo de vehículo hoy. ¿Programar la ruta de todos modos?"))return}}
   if(!mats.length){alert("El servicio "+tipo+" no tiene materiales. Créalos en Materiales.");return}
   if(new Set(pts.map(keyC)).size!=pts.length){alert("Hay clientes repetidos (mismo código SEA) en la selección.");return}
   const oc=ocup(tipo),dup=pts.filter(c=>oc[keyC(c)]);
@@ -216,11 +276,6 @@ T.rutas={b(){sel.clear();V(`<h1>Planificador Ruta</h1><div class="card" id="nuev
   document.querySelectorAll("[data-sc]").forEach(e=>e.onchange=()=>e.checked?sel.add(e.dataset.sc):sel.delete(e.dataset.sc))}};
 const lt=(t,fn)=>({b(){V(`<div id="lst"></div>`)},f(){const l=D.rutas.filter(r=>fn(r)&&(!psv||r.tipo==psv));$("#lst").innerHTML=`<h1>${t}${psv?" - <b>"+psv+"</b>":""}</h1><p><b>Resultado total: ${l.length}</b></p>`+rcards(l);wire()}});
 T.sin=lt("Rutas sin asignar",r=>!r.conductor&&!r.cerrada);T.ejec=lt("Rutas en ejecución",r=>r.conductor&&!r.cerrada);T.hist=lt("Ruta histórico",r=>r.cerrada);
-T.pla={b(){V(`<div class="card"><h2>Placas</h2><label>Placa</label><input id="pn" placeholder="ZNL256"><button class="btn" id="padd">Agregar placa</button></div><div class="card" id="pl"></div>`);
- $("#padd").onclick=async()=>{const n=$("#pn").value.trim().toUpperCase();if(!n)return;if(D.placas.some(p=>p.placa==n)){alert("Esa placa ya existe.");return}
-  try{await S.placas.save({id:"p"+Date.now(),placa:n,creado:Date.now()});$("#pn").value=""}catch(e){err(e)}}},
- f(){$("#pl").innerHTML=D.placas.map(p=>`<div class="chk">${esc(p.placa)}<button class="btn s r" style="margin-left:auto" data-dp="${p.id}">Eliminar</button></div>`).join("")||'<div class="mu">Sin placas.</div>';
-  document.querySelectorAll("[data-dp]").forEach(b=>b.onclick=()=>S.placas.del(b.dataset.dp))}};
 T.bit={b(){V(`<h1>Bitácora de movimientos</h1><div id="bl"></div>`)},
  f(){$("#bl").innerHTML=`<div class="sc"><table><tr><th>Fecha y hora</th><th>Usuario</th><th>Acción</th><th>Detalle</th><th>Ruta</th></tr>`+D.log.map(l=>`<tr><td>${esc(hm(l.ts))}</td><td>${esc(l.usuario)}</td><td>${esc(l.accion)}</td><td>${esc(l.detalle)}</td><td>${esc(l.ruta)}</td></tr>`).join("")+`</table></div>`+(D.log.length?"":'<div class="mu">Sin movimientos.</div>')}};
 T.mat={b(){V(`<div class="card"><h2>Materiales por línea de servicio</h2><div class="row"><div><label>Servicio</label><select id="ms">${SERV.map(s=>`<option>${s}</option>`).join("")}</select></div><div><label>Material</label><input id="mn"></div></div><button class="btn" id="madd">Agregar material</button></div><div id="mlist"></div>`);
@@ -265,9 +320,9 @@ T.cond={b(){V('<div id="clst"></div>')},
   if(draft&&el){const r=D.rutas.find(x=>x.id==draft.rid);if(r){const d=draft;draft=null;curId=d.rid;scr="ruta";ptIdx=d.i;openAlt(clone(r),d.i,d.kind);$("#ob").value=d.ob||"";putD(d);return}}
   if(ptIdx!==null||!el)return;
   if(scr=="home"){
-   el.innerHTML="<h1>Rutas Programadas</h1><div class=\"g4\">"+SERV.map(s=>{const a=act(s),n=D.rutas.filter(r=>!r.conductor&&!r.cerrada&&r.tipo==s).length;
+   el.innerHTML="<h1>Rutas Programadas</h1><div class=\"g4\"><button class=\"big\" style=\"background:var(--dk)\" data-g3=\"chk\">CHEQUEO DEL VEHÍCULO"+(D.auditorias.some(a=>a.conductor==U.nombre&&a.fecha==hoy())?"":"<span class=\"badge\">!</span>")+"</button>"+SERV.map(s=>{const a=act(s),n=D.rutas.filter(r=>!r.conductor&&!r.cerrada&&r.tipo==s).length;
     return `<button class="big" style="background:${a?"var(--ol)":"var(--gr)"}" data-sv="${s}">${s}${a?'<div style="font-size:13px">RUTA ACTIVA</div>':""}<span class="badge">${n}</span></button>`}).join("")+"</div>";
-   document.querySelectorAll("[data-sv]").forEach(b=>b.onclick=()=>{fsv=b.dataset.sv;const a=act(fsv);if(a){curId=a.id;scr="ruta"}else scr="list";T.cond.f()})}
+   document.querySelectorAll("[data-g3]").forEach(b=>b.onclick=()=>setTab(b.dataset.g3));document.querySelectorAll("[data-sv]").forEach(b=>b.onclick=()=>{fsv=b.dataset.sv;const a=act(fsv);if(a){curId=a.id;scr="ruta"}else scr="list";T.cond.f()})}
   else if(scr=="list"){const l=filtra(D.rutas.filter(r=>!r.conductor&&!r.cerrada&&r.tipo==fsv));
    el.innerHTML=`<button class="btn s d" data-back>← Volver</button>`+lh("Rutas Programadas - <b>"+fsv+"</b>")+`<p><b>Resultado total: ${l.length} - ${fsv}</b></p>`+rcards(l);lbind();wire()}
   else{const r=D.rutas.find(x=>x.id==curId);if(!r){scr="home";T.cond.f();return}el.innerHTML=win(r,true);wire()}}};
@@ -301,7 +356,7 @@ function resumen(r,i){
   m.innerHTML=`<div class="mbox"><h2 style="text-align:center;font-weight:300;font-size:20px">RESUMEN DE RECOLECCIÓN</h2><div class="mu" style="text-align:center">${esc(p.razon)}</div>
    <table style="margin-top:8px"><tr><th>Residuo</th><th>Kg</th><th>Obs.</th></tr>${it.map(x=>`<tr><td>${esc(x[0])}</td><td>${x[1]}</td><td>${esc(x[2])}</td></tr>`).join("")}<tr><th>Total Kg</th><th colspan="2">${tot}</th></tr></table>
    <label>Comentarios</label><textarea id="cm">${esc(_.cm||"")}</textarea>
-   <div style="text-align:center;margin:8px 0 4px"><a href="#" id="clr" style="color:#2a9d3a;font-weight:700">Limpiar Firma</a></div><canvas id="cv"></canvas>
+   <div style="text-align:center;margin:8px 0 4px"><a href="#" id="clr" style="color:#2a9d3a;font-weight:700">Limpiar Firma</a></div><canvas id="cv"></canvas><div class="mu" style="text-align:center">¿La persona no quiere firmar? Marca un punto (•) en el recuadro, escribe su nombre en "Quien entrega" y anota "no quiso firmar" en Comentarios.</div>
    <label>Quien entrega</label><input id="ent" value="${esc(_.ent||"")}"><label>Email principal</label><input id="mail" type="email" value="${esc(_.mail||"")}">
    <button class="btn" id="cons">CONSOLIDAR</button>
    <div class="row"><button class="btn o" id="edt">✎ EDITAR</button><button class="btn r" id="cx">✕ CANCELAR</button></div></div>`;
@@ -327,20 +382,324 @@ function resumen(r,i){
 function toUrl(f,max=640){return new Promise((res,rej)=>{const fr=new FileReader();fr.onerror=()=>rej(new Error("No se pudo leer la imagen"));
   fr.onload=()=>{const im=new Image();im.onerror=()=>rej(new Error("Imagen no válida"));im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement("canvas");
    c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);res(c.toDataURL("image/jpeg",.6))};im.src=fr.result};fr.readAsDataURL(f)})}
+let fotoTs=null;
+function sello(c,ts,tag){const x=c.getContext("2d");x.fillStyle="rgba(0,0,0,.65)";x.fillRect(0,c.height-28,c.width,28);x.fillStyle="#fff";x.font="bold 14px Arial";x.fillText(ts.toLocaleString("es-CO")+" · "+(U?U.nombre:"")+(tag?" · "+tag:""),8,c.height-9)}
+function stampUrl(u,ts,tag){return new Promise(res=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas");c.width=im.width;c.height=im.height;c.getContext("2d").drawImage(im,0,0);sello(c,ts,tag);res(c.toDataURL("image/jpeg",.6))};im.src=u})}
+async function camara(cb,title,tag){
+  if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia))return false;
+  const ov=document.createElement("div");ov.className="md";ov.id="cam";
+  ov.innerHTML='<div class="mc" style="text-align:center"><h2>'+esc(title||"Foto del punto")+'</h2><video id="vd" autoplay playsinline muted style="width:100%;background:#000;max-height:60vh"></video><div class="row"><button class="btn" id="cap">CAPTURAR</button><button class="btn d" id="cc">CANCELAR</button></div></div>';
+  document.body.appendChild(ov);let st=null;const close=()=>{if(st)st.getTracks().forEach(t=>t.stop());ov.remove()};
+  try{st=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});ov.querySelector("#vd").srcObject=st}catch(e){close();return false}
+  ov.querySelector("#cc").onclick=close;
+  ov.querySelector("#cap").onclick=()=>{const v=ov.querySelector("#vd");if(!v.videoWidth){alert("La cámara aún no está lista.");return}
+    const k=Math.min(1,800/Math.max(v.videoWidth,v.videoHeight)),c=document.createElement("canvas");c.width=Math.round(v.videoWidth*k);c.height=Math.round(v.videoHeight*k);
+    c.getContext("2d").drawImage(v,0,0,c.width,c.height);const ts=new Date();sello(c,ts,tag);close();cb(c.toDataURL("image/jpeg",.6),ts.toISOString())};
+  return true}
+const MOT=["No se alcanzó a visitar por la hora","Vehículo lleno","Contingencia en el camino","Contingencia con el vehículo"];
 function openAlt(r,i,kind){
-  const p=r.puntos[i],aus=kind=="ausente";foto=null;
+  const p=r.puntos[i],aus=kind=="ausente";foto=null;fotoTs=null;
   V(head(r,p,false)+`<div class="card" style="margin-top:10px"><h2>${aus?"CLIENTE AUSENTE (se visitó, no se recolectó)":"NO TERMINAR (no se visitó)"}</h2>
-   ${aus?`<label>Foto</label><label class="btn s d" style="color:#fff;display:inline-block;margin-right:6px;font-size:13px">Tomar foto<input type="file" accept="image/*" capture="environment" style="display:none" data-ph></label><label class="btn s d" style="color:#fff;display:inline-block;font-size:13px">Cargar de galería<input type="file" accept="image/*" style="display:none" data-ph></label><div class="mu" style="margin-top:6px">Si al abrir la cámara la página se recarga, lo escrito se conserva; vuelve a tomar la foto.</div><div><img id="pv" class="f hide"></div>`:""}
+   ${aus?`<label>Foto del punto (se toma en este momento, queda con fecha y hora)</label><button class="btn s d" id="tf" style="font-size:14px;padding:10px 14px">TOMAR FOTO</button><input type="file" accept="image/*" capture="environment" id="fb" style="display:none"><div><img id="pv" class="f hide"></div>`
+   :`<div class="mu">Motivos frecuentes (toca uno o escribe otro):</div><div style="margin:6px 0">${MOT.map((m,k)=>`<button class="btn s o" style="margin:2px" data-mot="${k}">${m}</button>`).join("")}</div>`}
    <label>Observación (obligatoria)</label><textarea id="ob"></textarea></div>
    <div class="row"><button class="btn o" id="ok">CONFIRMAR</button><button class="btn d" id="vol">CANCELAR</button></div>`);
-  putD({rid:curId,i,kind,ob:""});$("#ob").oninput=()=>putD({rid:curId,i,kind,ob:$("#ob").value});
-  document.querySelectorAll("[data-ph]").forEach(inp=>inp.onchange=async e=>{const f=e.target.files[0];if(!f)return;
-    try{foto=await toUrl(f);$("#pv").src=foto;$("#pv").classList.remove("hide")}catch(x){alert(x.message)}});
+  putD({rid:curId,i,kind,ob:""});const sv=()=>putD({rid:curId,i,kind,ob:$("#ob").value});$("#ob").oninput=sv;
+  document.querySelectorAll("[data-mot]").forEach(b=>b.onclick=()=>{$("#ob").value=MOT[+b.dataset.mot];sv()});
+  const setF=(u,ts)=>{foto=u;fotoTs=ts;$("#pv").src=u;$("#pv").classList.remove("hide")};
+  if(aus){
+    $("#tf").onclick=async()=>{if(!(await camara(setF)))$("#fb").click()};
+    $("#fb").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
+      if(Date.now()-f.lastModified>180000){alert("La foto debe tomarse en este momento. No se aceptan fotos de la galería.");return}
+      try{const ts=new Date();setF(await stampUrl(await toUrl(f),ts),ts.toISOString())}catch(x){alert(x.message)}}}
   $("#vol").onclick=()=>{clrD();openPt(i,true)};
   $("#ok").onclick=async()=>{const ob=$("#ob").value.trim();
     if(!ob){alert("La observación es obligatoria.");return}
-    if(aus&&!foto&&!confirm("No hay foto cargada. ¿Continuar sin foto?"))return
-    Object.assign(p,{estado:kind,obs:ob,cierre:new Date().toISOString()});if(aus)p.foto=foto;if(await saveRuta(r))logE(aus?"Cliente ausente":"No terminado",p.razon+" · "+ob,r.num)}
+    if(aus&&!foto&&!confirm("No hay foto tomada. ¿Continuar sin foto?"))return
+    Object.assign(p,{estado:kind,obs:ob,cierre:new Date().toISOString()});if(aus){p.foto=foto;p.fotoTs=fotoTs}
+    if(await saveRuta(r))logE(aus?"Cliente ausente":"No terminado",p.razon+" · "+ob+(aus&&fotoTs?" · foto "+hm(fotoTs):""),r.num)}
 }
+// ================= MÓDULO AUDITORÍA DE VEHÍCULOS (SEA-FR-GL002 / GL003) =================
+// Colección Supabase: docs.coleccion="auditorias". Evidencias: Storage bucket privado "evidencias" (si falla, queda embebida en el registro).
+const ATIPO=["RESPEL","APROVECHABLE"],EVB="evidencias",CHK={"RESPEL":{"salida":[{"t":"I. TRIPULACIÓN, DOCUMENTOS Y HABILITACIÓN","i":[{"id":"R01","c":"Licencia de conducción","k":"Vigente, categoría C acorde al vehículo; coincide con el conductor asignado en ABI.","s":"CRÍTICO","docs":["Licencia de conducción"]},{"id":"R02","c":"Curso de mercancías peligrosas (SISCONMP)","k":"Certificado del curso básico (60 h) o de actualización vigente, consultado en SISCONMP antes de la operación.","s":"CRÍTICO","docs":["Curso mercancías peligrosas"]},{"id":"R03","c":"Aptitud y habilitación de la tripulación","k":"Descanso suficiente, sin alcohol ni medicamentos que den sueño; conductor y auxiliar con EPS, ARL y examen médico vigentes (listado de habilitación).","s":"CRÍTICO"},{"id":"R04","c":"Licencia de tránsito, SOAT y RTM","k":"Vigentes (originales o verificables en RUNT).","s":"CRÍTICO","docs":["SOAT","RTM"]},{"id":"R05","c":"Póliza RCE y tarjeta de registro de mercancías peligrosas","k":"Póliza de responsabilidad civil extracontractual vigente para mercancías peligrosas; tarjeta de registro a bordo si aplica a SEA (vigencia por verificar con Jurídica).","s":"CRÍTICO","docs":["Póliza RCE"]},{"id":"R06","c":"Tarjeta de emergencia, FDS y plan de contingencia","k":"Tarjeta NTC 4532 en castellano y visible en cabina; hojas de seguridad de los residuos de la ruta; plan de contingencia disponible.","s":"CRÍTICO"},{"id":"R07","c":"Ruta del día y comprobantes","k":"Microruta en ABI; comprobantes de recolección; manifiesto o remesa electrónica (RNDC) cuando aplique.","s":"MAYOR"},{"id":"R08","c":"Estado en ABI y mantenimiento preventivo","k":"Vehículo HABILITADO en ABI (liberación técnica vigente) y mantenimiento preventivo no vencido (fecha o km).","s":"CRÍTICO","docs":["Próx. mantenimiento"]}]},{"t":"II. IDENTIFICACIÓN Y ROTULADO","i":[{"id":"R09","c":"Rótulos NTC 1692 y placas naranja con N.º UN","k":"Reflectivos, legibles y limpios, en costados, parte posterior y cabina; corresponden a la carga declarada. Si el vehículo alterna líneas, juego de rótulos disponible.","s":"CRÍTICO"}]},{"t":"III. MECÁNICA Y ELECTROMECÁNICA","i":[{"id":"R10","c":"Fluidos: aceite, refrigerante, frenos/embrague, dirección","k":"Niveles entre MIN y MAX; aceite sin aspecto lechoso; tapas ajustadas; mangueras y correas sin grietas ni desgaste.","s":"CRÍTICO"},{"id":"R11","c":"Fugas en piso y combustible","k":"Piso bajo el vehículo seco (aceite, combustible, refrigerante, hidráulico); tapa del tanque sellada; sin olor a combustible.","s":"CRÍTICO"},{"id":"R12","c":"Motor en marcha, transmisión y embrague","k":"Arranque normal, ralentí estable; sin ruidos, vibración ni humo excesivo; cambios sin saltos; embrague sin patinar; escape sin fugas.","s":"MAYOR"},{"id":"R13","c":"Frenos de servicio y parqueo","k":"Pedal firme, sin esponjosidad; frenado recto en prueba corta; freno de parqueo retiene el vehículo. Sistema de aire (si aplica): presión normal, alarma y sin fugas.","s":"CRÍTICO"},{"id":"R14","c":"Dirección y suspensión","k":"Sin juego excesivo ni ruidos (ref. interna: juego del volante < 10°); amortiguadores sin fugas; muelles o ballestas sin roturas; vehículo nivelado.","s":"CRÍTICO"},{"id":"R15","c":"Llantas, rines y repuesto","k":"Labrado ≥ 2,0 mm (criterio interno SEA, por verificar frente a NTC 5375); presión correcta; sin cortes ni deformaciones; tuercas completas y ajustadas; repuesto apto.","s":"CRÍTICO"},{"id":"R16","c":"Luces","k":"Bajas, altas, posición, placa, direccionales, estacionarias, stop y reversa operativas.","s":"CRÍTICO"},{"id":"R17","c":"Alarma de reversa y pito","k":"Alarma sonora automática al engranar reversa; pito audible.","s":"CRÍTICO"},{"id":"R18","c":"Cableado, fusibles y batería","k":"Sin cables expuestos ni empalmes improvisados; fusibles completos; batería fija, bornes limpios y apretados, sin sulfatación.","s":"CRÍTICO"},{"id":"R19","c":"Tablero de instrumentos","k":"Con el motor en marcha, sin testigos de falla encendidos (check engine, aceite, temperatura, batería, frenos/ABS, aire); velocímetro, odómetro y combustible operativos.","s":"CRÍTICO"},{"id":"R20","c":"Visibilidad y puestos de conducción","k":"Espejos íntegros y ajustados; cinturones operativos en todas las plazas; parabrisas sin fisuras; limpiaparabrisas operativo.","s":"CRÍTICO"},{"id":"R21","c":"Carrocería y chasis","k":"Sin deformaciones, soldaduras agrietadas, bordes cortantes ni piezas sueltas. Todo golpe o daño nuevo se fotografía y se registra en el bloque de novedades.","s":"MAYOR"},{"id":"R22","c":"Comunicación y seguimiento","k":"Celular operativo con ABI y teléfonos de emergencia; GPS (IMECSY) transmitiendo.","s":"MAYOR"}]},{"t":"IV. FURGÓN Y CARGA PELIGROSA","i":[{"id":"R23","c":"Hermeticidad y sujeción","k":"Puertas, cierres y sellos operativos; carga aislada de la cabina; reatas, lazos o anclajes en buen estado.","s":"CRÍTICO"},{"id":"R24","c":"Revestimiento y contención de lixiviados","k":"Superficie lisa, impermeable y lavable, esquinas redondeadas, sin fisuras; piso estanco con recolección de lixiviados sin salida al exterior.","s":"CRÍTICO"},{"id":"R25","c":"Uso exclusivo y sin compactación (ruta biológica)","k":"Vehículo destinado solo a residuos biológicos en la ruta del día y sin compactación. NA en ruta industrial (justificar).","s":"CRÍTICO"},{"id":"R26","c":"Embalajes y contenedores rígidos","k":"Limpios, con tapa, sin fisuras y suficientes para la ruta; residuos no van directamente sobre el piso.","s":"MAYOR"},{"id":"R27","c":"Refrigeración (si aplica)","k":"Operativa y < 4 °C si se transportan anatomopatológicos o animales, o hay riesgo de olores; registrar temperatura. NA si no aplica.","s":"CRÍTICO"},{"id":"R28","c":"Limpieza previa y fumigación","k":"Furgón limpio, sin residuos ni olores de la ruta anterior; lavado y desinfección de la semana registrados; certificado de fumigación vigente.","s":"MAYOR"}]},{"t":"V. EQUIPOS DE EMERGENCIA Y EPP","i":[{"id":"R29","c":"Extintores","k":"Dos multipropósito ABC (uno en cabina), cargados, con precinto y recarga vigente.","s":"CRÍTICO","docs":["Recarga extintores"]},{"id":"R30","c":"Kit de control de derrames","k":"Absorbente inerte, palas antichispa, barreras, bolsas rojas, recipientes, desinfectante y cinta; completo.","s":"CRÍTICO"},{"id":"R31","c":"Botiquín","k":"Completo, limpio y no vencido.","s":"MAYOR"},{"id":"R32","c":"Equipo de carretera","k":"Gato y cruceta, 2 señales reflectivas, 2 tacos, herramienta básica y linterna.","s":"CRÍTICO"},{"id":"R33","c":"EPP de emergencia a bordo","k":"Traje protector, guantes de nitrilo de caña larga, gafas, respirador.","s":"CRÍTICO"},{"id":"R34","c":"EPP personal de la tripulación","k":"Calzado de seguridad, guantes de nitrilo o resistentes a perforación, protección visual y respiratoria según el residuo. Sin EPP no sale.","s":"CRÍTICO"},{"id":"R35","c":"Uniforme e identificación","k":"Uniforme completo con prenda reflectiva y carné institucional visible.","s":"MAYOR"}]}],"cierre":[{"id":"RC01","c":"Carga compatible e íntegra","k":"No se mezclaron residuos incompatibles ni se llevaron personas, alimentos o medicamentos; embalajes cerrados y sin fugas; no se abrieron ni trasvasaron en ruta.","s":"CRÍTICO"},{"id":"RC02","c":"Incidentes y conducta en ruta","k":"Sin derrames ni accidentes (si hubo: contingencia activada y hallazgo registrado); no se fumó ni se estacionó en zonas pobladas; velocidad respetada (GPS).","s":"CRÍTICO"},{"id":"RC03","c":"Entrega al gestor autorizado","k":"Residuos entregados completos con tiquete de báscula o comprobante firmado; sin carga remanente.","s":"CRÍTICO"},{"id":"RC04","c":"Lavado y reposición","k":"Lavado según programación en sitio autorizado, con registro; kit, EPP de emergencia y botiquín repuestos si se usaron.","s":"MAYOR"},{"id":"RC05","c":"Novedades y daños reportados","k":"Registrados en el bloque de novedades con foto y avisados al Coordinador (daños a Jurídica).","s":"MAYOR"},{"id":"RC06","c":"Cierre en sistemas","k":"Tiquetes, pesos, combustible, km y novedades cerrados en ABI / TECNIAPP el mismo día.","s":"MAYOR"}]},"APROVECHABLE":{"salida":[{"t":"I. TRIPULACIÓN, DOCUMENTOS Y HABILITACIÓN","i":[{"id":"A01","c":"Licencia de conducción","k":"Vigente, categoría acorde al vehículo; coincide con el conductor asignado en ABI.","s":"CRÍTICO","docs":["Licencia de conducción"]},{"id":"A02","c":"Aptitud y habilitación de la tripulación","k":"Descanso suficiente, sin alcohol ni medicamentos que den sueño; conductor y auxiliares con EPS, ARL y examen médico vigentes (listado de habilitación).","s":"CRÍTICO"},{"id":"A03","c":"Licencia de tránsito, SOAT y RTM","k":"Vigentes (originales o verificables en RUNT).","s":"CRÍTICO","docs":["SOAT","RTM"]},{"id":"A04","c":"Pólizas del vehículo","k":"Responsabilidad civil y demás pólizas exigidas por SEA vigentes.","s":"MAYOR","docs":["Póliza RCE"]},{"id":"A05","c":"Microruta y formatos de control","k":"Microruta / APS asignada en ABI; planilla de ruta y formatos de viajes y pesaje disponibles.","s":"MAYOR"},{"id":"A06","c":"Estado en ABI y mantenimiento preventivo","k":"Vehículo HABILITADO en ABI (liberación técnica vigente) y mantenimiento preventivo no vencido (fecha o km).","s":"CRÍTICO","docs":["Próx. mantenimiento"]},{"id":"A07","c":"Identificación del prestador","k":"Placa visible; logotipo e información del prestador en el vehículo.","s":"MAYOR"},{"id":"A08","c":"GPS (IMECSY) y celular con ABI","k":"GPS transmitiendo en línea (seguimiento de ruta, horarios y frecuencias); celular cargado con ABI y teléfonos de emergencia.","s":"CRÍTICO"}]},{"t":"II. MECÁNICA Y ELECTROMECÁNICA","i":[{"id":"A09","c":"Fluidos: aceite, refrigerante, frenos/embrague, dirección","k":"Niveles entre MIN y MAX; aceite sin aspecto lechoso; tapas ajustadas; mangueras y correas sin grietas ni desgaste.","s":"CRÍTICO"},{"id":"A10","c":"Fugas en piso y combustible","k":"Piso bajo el vehículo seco (aceite, combustible, refrigerante, hidráulico); tapa del tanque sellada; sin olor a combustible.","s":"CRÍTICO"},{"id":"A11","c":"Motor en marcha, transmisión y embrague","k":"Arranque normal, ralentí estable; sin ruidos, vibración ni humo excesivo; cambios sin saltos; embrague sin patinar; escape sin fugas.","s":"MAYOR"},{"id":"A12","c":"Frenos de servicio y parqueo","k":"Pedal firme, sin esponjosidad; frenado recto en prueba corta; freno de parqueo retiene el vehículo. Sistema de aire (si aplica): presión normal, alarma y sin fugas.","s":"CRÍTICO"},{"id":"A13","c":"Dirección y suspensión","k":"Sin juego excesivo ni ruidos (ref. interna: juego del volante < 10°); amortiguadores sin fugas; muelles o ballestas sin roturas; vehículo nivelado.","s":"CRÍTICO"},{"id":"A14","c":"Llantas, rines y repuesto","k":"Labrado ≥ 2,0 mm (criterio interno SEA, por verificar frente a NTC 5375); presión correcta; sin cortes ni deformaciones; tuercas completas y ajustadas; repuesto apto.","s":"CRÍTICO"},{"id":"A15","c":"Luces","k":"Bajas, altas, posición, placa, direccionales, estacionarias, stop y reversa operativas.","s":"CRÍTICO"},{"id":"A16","c":"Alarma de reversa y pito","k":"Alarma sonora automática al engranar reversa; pito audible.","s":"CRÍTICO"},{"id":"A17","c":"Cableado, fusibles y batería","k":"Sin cables expuestos ni empalmes improvisados; fusibles completos; batería fija, bornes limpios y apretados, sin sulfatación.","s":"CRÍTICO"},{"id":"A18","c":"Tablero de instrumentos","k":"Con el motor en marcha, sin testigos de falla encendidos (check engine, aceite, temperatura, batería, frenos/ABS, aire); velocímetro, odómetro y combustible operativos.","s":"CRÍTICO"},{"id":"A19","c":"Visibilidad y puestos de conducción","k":"Espejos íntegros y ajustados; cinturones operativos en todas las plazas; parabrisas sin fisuras; limpiaparabrisas operativo.","s":"CRÍTICO"},{"id":"A20","c":"Carrocería y chasis","k":"Sin deformaciones, soldaduras agrietadas, bordes cortantes ni piezas sueltas. Todo golpe o daño nuevo se fotografía y se registra en el bloque de novedades.","s":"MAYOR"}]},{"t":"III. CARROCERÍA DE CARGA Y CUBRIMIENTO","i":[{"id":"A21","c":"Estructura de carga","k":"Platón, estacas, barandas y compuertas firmes; pasadores y seguros operativos; sin deformaciones ni bordes cortantes.","s":"CRÍTICO"},{"id":"A22","c":"Carpa o lona de cubrimiento","k":"Completa, sin roturas, con lazos o reatas; cubre el 100 % de la carga (lluvia y dispersión).","s":"CRÍTICO"},{"id":"A23","c":"Platón limpio y amarres","k":"Piso y paredes limpios y secos, sin líquidos ni elementos cortantes; reatas, cuerdas o mallas suficientes para el volumen.","s":"MAYOR"},{"id":"A24","c":"Sistemas auxiliares y báscula de mano (si aplican)","k":"Compuerta o plataforma hidráulica, rampa o volco sin fugas y con seguros; báscula de mano operativa y con calibración vigente. NA si no aplica.","s":"MAYOR"}]},{"t":"IV. EQUIPOS DE EMERGENCIA Y EPP","i":[{"id":"A25","c":"Extintor ABC","k":"Multipropósito, cargado, con precinto y recarga vigente; asegurado y accesible.","s":"CRÍTICO","docs":["Recarga extintor"]},{"id":"A26","c":"Equipo de carretera","k":"Gato y cruceta, 2 señales reflectivas, 2 tacos, herramienta básica y linterna.","s":"CRÍTICO"},{"id":"A27","c":"Botiquín y kit básico de derrames","k":"Botiquín completo y no vencido; kit con absorbente, bolsas y guantes para fugas.","s":"MAYOR"},{"id":"A28","c":"EPP personal de la tripulación","k":"Calzado de seguridad, guantes anticorte o resistentes a perforación, prenda de alta visibilidad. Sin EPP no sale.","s":"CRÍTICO"},{"id":"A29","c":"Protección visual, respiratoria e identificación","k":"Gafas, mascarilla contra polvo, uniforme completo y carné visible.","s":"MAYOR"}]}],"cierre":[{"id":"AC01","c":"Carga cubierta, asegurada y dentro de límites","k":"Cubierta durante el traslado, sin material desbordado; peso y dimensiones dentro de los límites del vehículo.","s":"CRÍTICO"},{"id":"AC02","c":"Solo material aprovechable; vía pública limpia","k":"No se recibieron ordinarios mezclados, peligrosos, líquidos ni orgánicos (rechazos registrados); no se abrieron bolsas ni se clasificó en vía pública; puntos limpios.","s":"CRÍTICO"},{"id":"AC03","c":"Entrega y pesaje en la ECA","k":"Traslado directo a ECA Rozo, sin trasbordos fuera de sitios definidos; pesaje en báscula calibrada con tiquete (tara, bruto, neto).","s":"CRÍTICO"},{"id":"AC04","c":"Conciliación de pesos","k":"Pesos de la ruta en ABI coinciden con el tiquete de la ECA; diferencias reportadas.","s":"MAYOR"},{"id":"AC05","c":"Novedades, daños e incidentes","k":"Registrados en el bloque de novedades con foto y avisados al Coordinador; sin excesos de velocidad ni paradas anómalas (GPS).","s":"MAYOR"},{"id":"AC06","c":"Cierre en sistemas y vehículo limpio","k":"Pesos, combustible, km y novedades cerrados en ABI el mismo día; platón sin residuos y carpa recogida y seca.","s":"MAYOR"}]}};
+const ZONAS=["Cabina / puestos","Carrocería / furgón / platón","Llantas y rines","Motor / transmisión","Frenos / dirección / suspensión","Sistema eléctrico / luces","Equipos de emergencia / EPP","Carga / cubrimiento","Otro"];
+const VER={ok:"APTO PARA OPERAR",co:"APTO CONDICIONADO",no:"NO APTO – INMOVILIZADO"},RK={[VER.ok]:1,[VER.co]:2,[VER.no]:3};
+const SVG=(d,w)=>`<svg class="ico" width="${w||18}" height="${w||18}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const IC={ok:SVG('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),x:SVG('<path d="M6 6l12 12M18 6L6 18"/>'),na:SVG('<path d="M5 12h14"/>'),cam:SVG('<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',20),warn:SVG('<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.5v.01"/>',22),plus:SVG('<path d="M12 5v14M5 12h14"/>')};
+let A=null,Am="home",PV={},evC={},Atried=false,Aup=0,Aview="flota",Asel=null,Af={placa:"",est:"",d1:"",d2:""};
+const AK="dra";
+const dias=f=>f?Math.round((new Date(f+"T00:00:00")-new Date(hoy()+"T00:00:00"))/864e5):null;
+const venc=d=>!!(d&&d.f&&dias(d.f)<0);
+const itemsOf=(tipo,fase)=>fase=="cierre"?CHK[tipo].cierre:CHK[tipo].salida.flatMap(s=>s.i);
+const store=(a,fase)=>fase=="cierre"?(a.cz=a.cz||{}):(a.it=a.it||{});
+const efRes=(it,s)=>it.docs&&s&&s.d&&it.docs.some(k=>venc(s.d[k]))?"NC":(s&&s.r)||"";
+const nFot=s=>((s&&s.f)||[]).length;
+const lg=(a,fase)=>itemsOf(a.tipo,fase);
+
+// ---- veredicto (misma regla del formato Excel) ----
+function calc(a,fase){
+  fase=fase||"salida";const st=store(a,fase);let pend=0,ncC=0,ncM=0,sinj=0;
+  lg(a,fase).forEach(it=>{const s=st[it.id]||{},r=efRes(it,s),forz=r=="NC"&&s.r!="NC";
+    if(!r){pend++;return}
+    if(r=="C"&&it.docs)it.docs.forEach(k=>{const d=(s.d||{})[k];if(!d||!d.f||!d.foto)sinj++});
+    if(r=="NC"){if(it.s=="CRÍTICO")ncC++;else if(it.s=="MAYOR")ncM++;
+      if(!forz&&(!(s.ob||"").trim()||(it.s!="MENOR"&&!nFot(s))))sinj++}
+    if(r=="NA"&&it.s=="CRÍTICO"&&!(s.ob||"").trim())sinj++});
+  let extra=0;if(fase=="salida"){const odo=+a.odo;if(!(odo>0)||!a.odoF)extra++;if(!(a.dan||[]).length&&!a.sinNov)extra++;
+    (a.dan||[]).forEach(x=>{if(!x.d||!x.d.trim()||(x.nuevo=="Sí"&&!(x.f||[]).length))extra++})}
+  else{const c=a.cie||{};if(!(+c.odo>0)||!(+c.gal>=0)||c.gal===""||c.gal==null||!c.tiq||!c.foto)extra++}
+  const v=pend||sinj||extra?"INCOMPLETO":ncC?VER.no:ncM?VER.co:VER.ok;
+  return{pend,ncC,ncM,sinj,extra,v,total:lg(a,fase).length,hechos:lg(a,fase).length-pend}}
+
+// ---- evidencias ----
+async function upFoto(u,ts,tag){const blob=await(await fetch(u)).blob(),p=`${A.id}/${(tag||"f").replace(/[^A-Za-z0-9]+/g,"_")}-${Date.now()}.jpg`;
+  try{const{error}=await sb.storage.from(EVB).upload(p,blob,{contentType:"image/jpeg"});if(error)throw error;PV[p]=u;return p}
+  catch(e){console.warn("Storage no disponible; evidencia embebida:",e.message||e);return u}}
+async function evUrl(p){if(!p)return"";if(p.startsWith("data:"))return p;if(PV[p])return PV[p];
+  if(evC[p]&&evC[p].t>Date.now())return evC[p].u;
+  const{data,error}=await sb.storage.from(EVB).createSignedUrl(p,3600);if(error||!data)return"";evC[p]={u:data.signedUrl,t:Date.now()+3e6};return data.signedUrl}
+function hydrate(root){(root||document).querySelectorAll("img[data-ev]").forEach(async i=>{const u=await evUrl(i.dataset.ev);if(u){i.src=u;i.onclick=()=>window.open(u,"_blank")}})}
+async function takePhoto(title,tag,cb){
+  const done=async(u,ts)=>{Aup++;uiUp();try{cb(await upFoto(u,ts,tag),ts)}catch(e){alert("No se pudo guardar la foto: "+(e.message||e))}finally{Aup--;uiUp()}};
+  if(await camara((u,ts)=>done(u,ts),title,tag))return;
+  const inp=document.createElement("input");inp.type="file";inp.accept="image/*";inp.setAttribute("capture","environment");
+  inp.onchange=async e=>{const f=e.target.files[0];if(!f)return;
+    if(Date.now()-f.lastModified>180000){alert("La foto debe tomarse en este momento. No se aceptan fotos de la galería.");return}
+    try{const ts=new Date();done(await stampUrl(await toUrl(f,800),ts,tag),ts.toISOString())}catch(x){alert(x.message)}};inp.click()}
+const uiUp=()=>{const b=$("#abtn");if(b){b.disabled=Aup>0;b.dataset.l=b.dataset.l||b.textContent;b.textContent=Aup>0?"Subiendo evidencia…":b.dataset.l}};
+const thumbs=(arr,rm)=>(arr||[]).map((f,k)=>`<span class="th"><img data-ev="${esc(f.p)}" alt="Evidencia ${k+1}"${PV[f.p]?` src="${PV[f.p]}"`:""}>${rm?`<button type="button" class="x" data-rm="${rm}|${k}" aria-label="Quitar foto ${k+1}">${IC.x}</button>`:""}<i>${esc(new Date(f.ts).toLocaleTimeString("es-CO",{hour:"2-digit",minute:"2-digit"}))}</i></span>`).join("");
+
+// ---- borrador local (solo rutas de Storage, liviano) ----
+const putA=()=>{if(!A)return;try{localStorage.setItem(AK,JSON.stringify(A))}catch(e){}};
+const getA=()=>{try{return JSON.parse(localStorage.getItem(AK)||"null")}catch(e){return null}};
+const clrA=()=>{A=null;try{localStorage.removeItem(AK)}catch(e){}};
+
+// ---- estado de flota (usado también por el planificador) ----
+const audsDe=p=>D.auditorias.filter(a=>a.placa==p).sort((x,y)=>(y.creado||0)-(x.creado||0));
+function estPlaca(p){const a=audsDe(p).find(x=>x.fecha==hoy());if(!a)return{key:"sin",txt:"SIN CHEQUEO HOY",a:null};
+  const v=a.dec||a.v,key=v==VER.ok?"apto":v==VER.co?"cond":"no";
+  return{key,txt:v,a,pend:a.v!=VER.ok&&!a.dec,cierre:!a.cie}}
+function docsPlaca(p){const out=[];const a=audsDe(p)[0];if(!a)return out;
+  lg(a,"salida").forEach(it=>{(it.docs||[]).forEach(k=>{const d=((a.it||{})[it.id]||{}).d;if(d&&d[k]&&d[k].f)out.push({k,f:d[k].f,dd:dias(d[k].f)})})});return out}
+function lastDocs(p){const m={};const a=audsDe(p)[0];if(a)Object.keys(a.it||{}).forEach(id=>{const d=a.it[id].d;if(d)m[id]=clone(d)});return m}
+
+// ---- UI del ítem ----
+const SVC={"CRÍTICO":"c","MAYOR":"m","MENOR":"n"};
+function docHTML(it,s){return it.docs.map(k=>{const d=((s.d||{})[k])||{},dd=dias(d.f);
+  const b=!d.f?"":dd<0?`<span class="dv bad">${IC.x} Vencido hace ${-dd} d</span>`:dd<=30?`<span class="dv warn">${IC.warn.replace('width="22" height="22"','width="16" height="16"')} Vence en ${dd} d</span>`:`<span class="dv ok">${IC.ok} Vigente · ${dd} d</span>`;
+  const miss=Atried&&(!d.f||!d.foto);
+  return `<div class="dc${miss?" er":""}"><label for="d-${it.id}-${esc(k)}">${esc(k)} · vence</label>
+   <div class="dr"><input type="date" id="d-${it.id}-${esc(k)}" data-df="${it.id}|${esc(k)}" value="${esc(d.f||"")}">${b}</div>
+   <div class="th-w">${d.foto?thumbs([{p:d.foto,ts:d.ts||Date.now()}]):""}<button type="button" class="btn s o ph" data-dph="${it.id}|${esc(k)}">${IC.cam} ${d.foto?"Cambiar foto":"Foto del documento"}</button></div>
+   ${d.prev&&d.foto?`<div class="mu">Tomado del chequeo anterior. Si no cambió, no necesita nueva foto.</div>`:""}
+   ${miss?`<div class="em" role="alert">Falta ${!d.f?"la fecha de vencimiento":"la foto del documento"}.</div>`:""}</div>`}).join("")}
+function itemHTML(it,no){const st=store(A,A.fase),s=st[it.id]||{},r=efRes(it,s),forz=r=="NC"&&s.r!="NC";
+  const needEv=r=="NC"&&!forz,needJ=r=="NA"&&it.s=="CRÍTICO";
+  const errOb=Atried&&(needEv||needJ)&&!(s.ob||"").trim(),errF=Atried&&needEv&&it.s!="MENOR"&&!nFot(s),errR=Atried&&!r;
+  return `<div class="ai ${r=="NC"?"nc":r=="C"?"ok":r=="NA"?"na":""}${errR?" er":""}" id="ai-${it.id}" data-no="${no}">
+   <div class="ah"><span class="no">${no}</span><b>${esc(it.c)}</b><span class="sv sv-${SVC[it.s]}">${it.s}</span></div>
+   <div class="ac">${esc(it.k)}</div>
+   ${it.docs&&r!="NA"?docHTML(it,s):""}
+   <div class="seg" role="radiogroup" aria-label="Resultado: ${esc(it.c)}">${[["C","Cumple",IC.ok],["NC","No cumple",IC.x],["NA","No aplica",IC.na]].map(([v,l,i])=>`<button type="button" role="radio" aria-checked="${r==v}" class="${r==v?"on":""} s${v}" data-it="${it.id}" data-r="${v}"${forz&&v!="NC"?" disabled":""}>${i}<span>${l}</span></button>`).join("")}</div>
+   ${forz?`<div class="em" role="alert">${IC.warn.replace('width="22" height="22"','width="16" height="16"')} Documento vencido: queda como NO CUMPLE automáticamente.</div>`:""}
+   ${errR?`<div class="em" role="alert">Marque un resultado.</div>`:""}
+   ${(needEv||needJ)&&!forz?`<div class="ev"><label for="o-${it.id}">${needJ?"Justificación de “No aplica” (obligatoria en ítem crítico)":"Describa el daño o la novedad (obligatorio)"}</label>
+     <textarea id="o-${it.id}" data-ob="${it.id}" aria-invalid="${errOb}">${esc(s.ob||"")}</textarea>${errOb?`<div class="em" role="alert">Este campo es obligatorio.</div>`:""}
+     ${needEv?`<div class="th-w">${thumbs(s.f,it.id)}<button type="button" class="btn s o ph" data-ph="${it.id}">${IC.cam} Tomar foto</button></div>
+     <div class="${errF?"em":"mu"}"${errF?' role="alert"':""}>${it.s=="MENOR"?"Foto recomendada.":"Foto obligatoria (queda con fecha, hora y usuario)."}</div>`:""}</div>`:""}
+  </div>`}
+function secHTML(){const fase=A.fase,secs=fase=="cierre"?[{t:"VERIFICACIÓN DE CARGA Y CIERRE DE JORNADA",i:CHK[A.tipo].cierre}]:CHK[A.tipo].salida;let n=0;
+  return secs.map((sec,k)=>`<details class="as" open data-k="${k}"><summary><span>${esc(sec.t)}</span><span class="cnt" data-sc="${k}"></span></summary>${sec.i.map(it=>itemHTML(it,++n)).join("")}</details>`).join("")}
+function danHTML(){return `<details class="as" open><summary><span>DAÑOS Y NOVEDADES DE FUNCIONAMIENTO</span><span class="cnt" id="dcnt"></span></summary><div class="ai"><div class="ac">Registre todo golpe, fuga, falla o faltante, aunque ya esté en un ítem NC. Un daño nuevo exige foto.</div>
+  ${(A.dan||[]).map((x,i)=>`<div class="dn" data-dn="${i}"><div class="row"><div><label for="dz${i}">Zona o sistema</label><select id="dz${i}" data-dz="${i}">${ZONAS.map(z=>`<option${z==x.z?" selected":""}>${esc(z)}</option>`).join("")}</select></div>
+   <div><label for="dnw${i}">¿Es un daño nuevo?</label><select id="dnw${i}" data-dnw="${i}"><option${x.nuevo=="Sí"?" selected":""}>Sí</option><option${x.nuevo!="Sí"?" selected":""}>No</option></select></div></div>
+   <label for="dd${i}">Descripción</label><textarea id="dd${i}" data-dd="${i}" aria-invalid="${Atried&&!(x.d||"").trim()}">${esc(x.d||"")}</textarea>${Atried&&!(x.d||"").trim()?'<div class="em" role="alert">Describa el daño o la novedad.</div>':""}
+   <div class="th-w">${thumbs(x.f,"dan"+i)}<button type="button" class="btn s o ph" data-dph2="${i}">${IC.cam} Tomar foto</button><button type="button" class="btn s r" data-ddel="${i}">Quitar</button></div>
+   ${x.nuevo=="Sí"&&!(x.f||[]).length?`<div class="${Atried?"em":"mu"}">Foto obligatoria para un daño nuevo.</div>`:""}</div>`).join("")}
+  <button type="button" class="btn s d" id="dadd">${IC.plus} Agregar novedad</button>
+  ${(A.dan||[]).length?"":`<label class="ck2"><input type="checkbox" id="snv" ${A.sinNov?"checked":""}> Confirmo que revisé el vehículo y no hay daños ni novedades.</label>${Atried&&!A.sinNov?'<div class="em" role="alert">Agregue una novedad o confirme que no hay.</div>':""}`}
+  </div></details>`}
+function cierreHTML(){const c=A.cie||(A.cie={});return `<details class="as" open><summary><span>DATOS DE CIERRE</span></summary><div class="ai">
+  <div class="row"><div><label for="co">Odómetro al regreso (km)</label><input id="co" type="number" inputmode="numeric" value="${esc(c.odo||"")}"></div><div><label for="cg">Combustible tanqueado (gal)</label><input id="cg" type="number" inputmode="decimal" step="0.1" value="${esc(c.gal==null?"":c.gal)}"></div></div>
+  <div class="mu" id="crend"></div>
+  <label for="ct">N.º tiquete de báscula / comprobante</label><input id="ct" value="${esc(c.tiq||"")}">
+  <div class="th-w">${c.foto?thumbs([{p:c.foto,ts:c.ts||Date.now()}]):""}<button type="button" class="btn s o ph" id="cph">${IC.cam} Foto del tiquete</button></div>
+  ${Atried&&(!c.foto||!c.tiq||!(+c.odo>0)||c.gal===""||c.gal==null)?'<div class="em" role="alert">Complete odómetro, combustible, tiquete y foto del tiquete.</div>':""}</div></details>`}
+function cabHTML(){return `<div class="ai"><div class="row"><div><label for="ko">Odómetro de salida (km)</label><input id="ko" type="number" inputmode="numeric" value="${esc(A.odo||"")}"></div>
+  <div><label for="kr">Ruta del día (opcional)</label><input id="kr" value="${esc(A.ruta||"")}" placeholder="N.º ruta"></div></div>
+  <div class="th-w">${A.odoF?thumbs([{p:A.odoF,ts:A.odoTs||Date.now()}]):""}<button type="button" class="btn s o ph" id="kph">${IC.cam} Foto del tablero (km)</button></div>
+  ${Atried&&(!(+A.odo>0)||!A.odoF)?'<div class="em" role="alert">Registre el odómetro y la foto del tablero.</div>':""}</div>`}
+
+// ---- barra de progreso / veredicto ----
+const vcls=v=>v==VER.ok?"apto":v==VER.co?"cond":v==VER.no?"no":"inc";
+const vic=v=>v==VER.ok?IC.ok:v==VER.co?IC.warn.replace('width="22" height="22"','width="18" height="18"'):v==VER.no?IC.x:IC.na;
+function refresh(){if(!A||Am!="form")return;const c=calc(A,A.fase);
+  const b=$("#abar");if(!b)return;
+  b.querySelector(".pg i").style.width=Math.round(100*c.hechos/Math.max(1,c.total))+"%";
+  b.querySelector(".tx").innerHTML=`<b>${c.hechos}/${c.total}</b> revisados · ${c.ncC?`<b class="rd">${c.ncC} crítico${c.ncC>1?"s":""}</b> · `:""}${c.ncM?`<b class="or2">${c.ncM} mayor${c.ncM>1?"es":""}</b> · `:""}<span class="vv ${vcls(c.v)}">${vic(c.v)} ${esc(c.v)}</span>`;
+  const secs=A.fase=="cierre"?[{i:CHK[A.tipo].cierre}]:CHK[A.tipo].salida;const st=store(A,A.fase);
+  secs.forEach((sec,k)=>{const el=document.querySelector(`[data-sc="${k}"]`);if(!el)return;const h=sec.i.filter(it=>efRes(it,st[it.id]||{})).length,n=sec.i.filter(it=>efRes(it,st[it.id]||{})=="NC").length;
+    el.textContent=h+"/"+sec.i.length+(n?" · "+n+" NC":"");el.className="cnt"+(n?" hasnc":h==sec.i.length?" done":"")});
+  const dc=$("#dcnt");if(dc)dc.textContent=(A.dan||[]).length?(A.dan.length+" registrada(s)"):(A.sinNov?"Sin novedades":"Pendiente");
+  const cr=$("#crend");if(cr&&A.fase=="cierre"&&A.odo&&A.cie&&A.cie.odo){const km=+A.cie.odo-+A.odo,g=+A.cie.gal;cr.textContent=km>0?`Recorrido: ${km} km`+(g>0?` · Rendimiento: ${(km/g).toFixed(1)} km/gal`:""):"El odómetro final debe ser mayor al de salida ("+A.odo+")."}
+  putA()}
+function rerender(id){const it=itemsOf(A.tipo,A.fase).find(x=>x.id==id),el=$("#ai-"+id);if(!it||!el)return;
+  const had=document.activeElement&&document.activeElement.id,pos=document.activeElement&&document.activeElement.selectionStart;
+  el.outerHTML=itemHTML(it,+el.dataset.no);hydrate($("#ai-"+id));if(had){const e=document.getElementById(had);if(e){e.focus();try{e.setSelectionRange(pos,pos)}catch(x){}}}refresh()}
+
+// ---- formulario (conductor) ----
+function openForm(keep){Am="form";if(!keep)Atried=false;
+  const fase=A.fase,tt=fase=="cierre"?"Cierre de jornada":"Chequeo del vehículo";
+  V(`<div id="aw"><button class="btn s d" id="aback">← Salir (se guarda el borrador)</button>
+   <h1 style="margin:10px 0 2px">${tt}</h1><div class="mu" style="text-align:center">${esc(A.placa)} · ${esc(A.tipo)} · ${esc(A.fecha)} · ${esc(A.conductor)}</div>
+   ${fase=="cierre"?"":cabHTML()}${secHTML()}${fase=="cierre"?cierreHTML():danHTML()}
+   <div style="height:96px"></div>
+   <div class="abar" id="abar" role="status" aria-live="polite"><div class="pg"><i></i></div><div class="tx"></div><button class="btn" id="abtn" type="button">REVISAR Y FIRMAR</button></div></div>`);
+  hydrate($("#aw"));refresh();wireForm()}
+function wireForm(){const w=$("#aw");if(!w)return;
+  w.onclick=async e=>{const t=e.target.closest("button");if(!t)return;
+    if(t.id=="aback"){putA();chkHome();return}
+    if(t.id=="abtn"){reviewA();return}
+    if(t.dataset.r){const it=itemsOf(A.tipo,A.fase).find(x=>x.id==t.dataset.it),st=store(A,A.fase),s=st[it.id]||(st[it.id]={});s.r=s.r==t.dataset.r?"":t.dataset.r;
+      if(it.docs&&!s.d){s.d={};const pv=A.docsPrev&&A.docsPrev[it.id];it.docs.forEach(k=>{if(pv&&pv[k])s.d[k]=Object.assign({},pv[k],{prev:true})})}
+      rerender(it.id);return}
+    if(t.dataset.ph){const id=t.dataset.ph;takePhoto("Evidencia del hallazgo",A.placa+" · "+id,(p,ts)=>{const s=store(A,A.fase)[id]||(store(A,A.fase)[id]={});(s.f=s.f||[]).push({p,ts});rerender(id)});return}
+    if(t.dataset.dph){const[id,k]=t.dataset.dph.split("|");takePhoto("Documento: "+k,A.placa+" · "+k,(p,ts)=>{const s=store(A,A.fase)[id]||(store(A,A.fase)[id]={});s.d=s.d||{};s.d[k]=Object.assign(s.d[k]||{},{foto:p,ts,prev:false});rerender(id)});return}
+    if(t.dataset.rm){const[id,k]=t.dataset.rm.split("|");
+      if(id.startsWith("dan")){const x=A.dan[+id.slice(3)];x.f.splice(+k,1);reDan()}else{const s=store(A,A.fase)[id];s.f.splice(+k,1);rerender(id)}return}
+    if(t.id=="kph"){takePhoto("Tablero: odómetro",A.placa+" · km",(p,ts)=>{A.odoF=p;A.odoTs=ts;openFormKeep()});return}
+    if(t.id=="cph"){takePhoto("Tiquete / comprobante",A.placa+" · tiquete",(p,ts)=>{A.cie=A.cie||{};A.cie.foto=p;A.cie.ts=ts;openFormKeep()});return}
+    if(t.id=="dadd"){(A.dan=A.dan||[]).push({z:ZONAS[0],d:"",nuevo:"Sí",f:[]});A.sinNov=false;reDan();return}
+    if(t.dataset.ddel!=null){A.dan.splice(+t.dataset.ddel,1);reDan();return}
+    if(t.dataset.dph2!=null){const i=+t.dataset.dph2;takePhoto("Daño o novedad",A.placa+" · novedad",(p,ts)=>{A.dan[i].f.push({p,ts});reDan()})}};
+  w.oninput=e=>{const t=e.target;
+    if(t.dataset.ob){const s=store(A,A.fase)[t.dataset.ob];if(s){s.ob=t.value;putA();refresh()}}
+    else if(t.dataset.dd!=null){A.dan[+t.dataset.dd].d=t.value;putA();refresh()}
+    else if(t.id=="ko"){A.odo=t.value;putA();refresh()}else if(t.id=="kr"){A.ruta=t.value;putA()}
+    else if(t.id=="co"||t.id=="cg"||t.id=="ct"){A.cie=A.cie||{};A.cie[{co:"odo",cg:"gal",ct:"tiq"}[t.id]]=t.value;putA();refresh()}};
+  w.onchange=e=>{const t=e.target;
+    if(t.dataset.df){const[id,k]=t.dataset.df.split("|"),s=store(A,A.fase)[id]||(store(A,A.fase)[id]={});s.d=s.d||{};const o=s.d[k]||{};
+      s.d[k]=(o.prev&&o.f==t.value)?o:{f:t.value,foto:o.f==t.value?o.foto:"",ts:o.ts};rerender(id)}
+    else if(t.dataset.dz!=null){A.dan[+t.dataset.dz].z=t.value;putA()}
+    else if(t.dataset.dnw!=null){A.dan[+t.dataset.dnw].nuevo=t.value;reDan()}
+    else if(t.id=="snv"){A.sinNov=t.checked;putA();refresh()}}}
+function openFormKeep(){const y=window.scrollY;openForm(true);window.scrollTo(0,y)}
+function reDan(){const el=document.querySelector("details.as:last-of-type");if(!el||A.fase=="cierre")return;const y=window.scrollY;el.outerHTML=danHTML();hydrate($("#aw"));refresh();window.scrollTo(0,y)}
+
+// ---- revisión + firma ----
+function reviewA(){Atried=true;const c=calc(A,A.fase);
+  if(Aup>0){alert("Espere a que termine de subir la evidencia.");return}
+  if(c.pend||c.sinj||c.extra){const y=window.scrollY;openForm(true);window.scrollTo(0,y);
+    const bad=document.querySelector(".ai.er,.dc.er,.ev .em,.ai [aria-invalid=true],.ai .em");(bad||$("#aw")).scrollIntoView({block:"center",behavior:matchMedia("(prefers-reduced-motion:reduce)").matches?"auto":"smooth"});
+    return}
+  Am="rev";const ncs=lg(A,A.fase).filter(it=>efRes(it,store(A,A.fase)[it.id]||{})=="NC");
+  V(`<div id="aw"><button class="btn s d" id="aedit">← Editar</button><h1 style="margin:10px 0 6px">Revisión y firma</h1>
+   <div class="vban ${vcls(c.v)}" role="status">${vic(c.v)}<div><b>${esc(c.v)}</b><div>${c.v==VER.no?"El vehículo NO debe salir hasta que el Coordinador lo habilite.":c.v==VER.co?"Sale solo con autorización del Coordinador de Logística.":"Puede operar."}</div></div></div>
+   <div class="card"><h2>Hallazgos (${ncs.length})</h2>${ncs.map(it=>{const s=store(A,A.fase)[it.id];return `<div class="chk"><span class="sv sv-${SVC[it.s]}">${it.s}</span><div><b>${esc(it.c)}</b><div class="mu">${esc(s.ob||"Documento vencido")} · ${nFot(s)} foto(s)</div></div></div>`}).join("")||'<div class="mu">Sin hallazgos.</div>'}
+   ${A.fase=="salida"?`<div class="mu" style="margin-top:6px">Novedades: ${(A.dan||[]).length||"ninguna"} · Odómetro: ${esc(A.odo)} km</div>`:`<div class="mu" style="margin-top:6px">Tiquete ${esc(A.cie.tiq)} · ${esc(A.cie.odo)} km · ${esc(A.cie.gal)} gal</div>`}</div>
+   <div class="card"><h2>Firma del conductor</h2><div style="text-align:right"><a href="#" id="sclr" class="lnk">Limpiar firma</a></div><canvas id="scv" aria-label="Recuadro de firma"></canvas>
+   <label class="ck2"><input type="checkbox" id="decl"> Declaro que las respuestas y fotos corresponden al estado real del vehículo en este momento.</label><div id="serr" class="em" role="alert"></div></div>
+   <button class="btn" id="asend" type="button">ENVIAR ${A.fase=="cierre"?"CIERRE":"CHEQUEO"}</button></div>`);
+  const cv=$("#scv"),dpr=window.devicePixelRatio||1;cv.width=cv.offsetWidth*dpr;cv.height=150*dpr;const x=cv.getContext("2d");x.scale(dpr,dpr);x.lineWidth=2;x.lineCap="round";x.strokeStyle="#111";
+  let d=false,sg=false;const pos=e=>{const b=cv.getBoundingClientRect();return[e.clientX-b.left,e.clientY-b.top]};
+  cv.onpointerdown=e=>{d=true;sg=true;cv.setPointerCapture(e.pointerId);const[a,b]=pos(e);x.beginPath();x.moveTo(a,b)};cv.onpointermove=e=>{if(!d)return;const[a,b]=pos(e);x.lineTo(a,b);x.stroke()};cv.onpointerup=()=>{d=false};
+  $("#sclr").onclick=e=>{e.preventDefault();x.clearRect(0,0,cv.width,cv.height);sg=false};
+  $("#aedit").onclick=()=>openForm(true);
+  $("#asend").onclick=async()=>{if(!sg){$("#serr").textContent="Falta la firma.";return}if(!$("#decl").checked){$("#serr").textContent="Marque la declaración.";return}
+    const t=document.createElement("canvas");t.width=300;t.height=100;t.getContext("2d").drawImage(cv,0,0,300,100);const fir=t.toDataURL("image/png"),b=$("#asend");b.disabled=true;b.textContent="Guardando…";
+    try{await saveA(c,fir)}catch(e){b.disabled=false;b.textContent="REINTENTAR ENVÍO";err(e)}}}
+async function saveA(c,fir){const nuevo=A.fase=="salida",ts=new Date().toISOString();
+  if(nuevo){Object.assign(A,{v:c.v,ncC:c.ncC,ncM:c.ncM,firma:fir,ts,creado:Date.now(),num:Math.max(0,...D.auditorias.map(x=>x.num||0))+1});delete A.docsPrev}
+  else{A.cie=Object.assign(A.cie,{ts:ts,v:c.v,ncC:c.ncC,ncM:c.ncM,firma:fir,odo:+A.cie.odo,gal:+A.cie.gal})}
+  const rec=clone(A);delete rec.fase;await S.auditorias.save(rec);
+  await logE(nuevo?"Chequeo vehículo":"Cierre jornada vehículo",`${A.placa} · ${nuevo?c.v:"cierre "+c.v} · ${c.ncC} crít / ${c.ncM} may`,A.ruta||"");
+  const v=c.v;clrA();Am="done";
+  V(`<div id="aw"><div class="vban ${vcls(v)}">${vic(v)}<div><b>${nuevo?"Chequeo enviado":"Cierre enviado"}</b><div>${esc(v)}</div></div></div>
+   ${nuevo&&v!=VER.ok?`<div class="card"><b>${v==VER.no?"No salga con este vehículo.":"No salga hasta tener la autorización."}</b><div class="mu">Avise ahora al Coordinador de Logística. Él registra la decisión en ABI.</div></div>`:""}
+   <button class="btn" id="aok">VOLVER</button></div>`);$("#aok").onclick=chkHome}
+
+// ---- Conductor: pestaña de chequeo ----
+const chkHome=()=>{T.chk.b();T.chk.f()};
+const placasT=()=>D.placas.filter(p=>ATIPO.includes(p.tipo));
+function newA(placa,fase){const p=D.placas.find(x=>x.placa==placa),r=D.rutas.find(x=>x.conductor==U.nombre&&!x.cerrada&&x.placa==placa);
+  A={id:"a"+Date.now(),fase:"salida",placa,tipo:p.tipo,fecha:hoy(),conductor:U.nombre,ruta:r?String(r.num):"",it:{},dan:[],ver:"v4",docsPrev:lastDocs(placa)};openForm()}
+T.chk={b(){Am="home";V('<div id="clk"></div>')},
+ f(){const el=$("#clk");if(!el||Am!="home")return;
+  const dr=getA(),mias=D.auditorias.filter(a=>a.conductor==U.nombre&&a.fecha==hoy()).sort((a,b)=>b.creado-a.creado),pl=placasT();
+  el.innerHTML=`<h1>Chequeo de vehículo</h1>
+   ${dr?`<div class="card"><h2>Borrador pendiente</h2><div class="mu">${esc(dr.placa)} · ${dr.fase=="cierre"?"cierre de jornada":"chequeo de salida"} · ${esc(dr.fecha)}</div><div class="row"><button class="btn o" id="dcont">CONTINUAR</button><button class="btn d" id="ddesc">DESCARTAR</button></div></div>`:""}
+   <div class="card"><h2>Nuevo chequeo de salida</h2>${pl.length?`<label for="apl">Vehículo (placa)</label><select id="apl">${pl.map(p=>`<option value="${esc(p.placa)}">${esc(p.placa)} · ${esc(p.tipo)}</option>`).join("")}</select><div id="ainf" class="mu"></div><button class="btn" id="ago">INICIAR CHEQUEO</button>`:'<div class="mu">No hay placas con tipo de vehículo. Pídale al programador que defina el tipo (RESPEL o APROVECHABLE) en Placas.</div>'}</div>
+   <div class="card"><h2>Mis chequeos de hoy</h2>${mias.map(a=>`<div class="chk"><div style="flex:1"><b>${esc(a.placa)}</b> <span class="vv ${vcls(a.dec||a.v)}">${esc(a.dec||a.v)}</span><div class="mu">${hm(a.ts)} · ${a.cie?"Jornada cerrada":"Cierre de jornada pendiente"}</div></div>${a.cie?"":`<button class="btn s o" data-cz="${a.id}">Cerrar jornada</button>`}</div>`).join("")||'<div class="mu">Aún no ha hecho chequeos hoy.</div>'}</div>`;
+  const dc=$("#dcont");if(dc){dc.onclick=()=>{A=getA();openForm()};$("#ddesc").onclick=()=>{if(confirm("¿Descartar el borrador? Se pierde lo diligenciado.")){clrA();T.chk.f()}}}
+  const ap=$("#apl");if(ap){const inf=()=>{const e=estPlaca(ap.value),a=e.a;$("#ainf").textContent=a?`Hoy ya hay un chequeo de esta placa (${a.conductor}, ${hm(a.ts)}).`:"Aún no tiene chequeo hoy."};ap.onchange=inf;inf();
+    $("#ago").onclick=()=>{if(getA()&&!confirm("Hay un borrador sin enviar. Si inicia uno nuevo se pierde. ¿Continuar?"))return;const e=estPlaca(ap.value);if(e.a&&!confirm("Esta placa ya tiene chequeo hoy. ¿Hacer otro?"))return;newA(ap.value)}}
+  document.querySelectorAll("[data-cz]").forEach(b=>b.onclick=()=>{const a=D.auditorias.find(x=>x.id==b.dataset.cz);A=Object.assign(clone(a),{fase:"cierre",cz:a.cz||{},cie:a.cie||{}});openForm()})}};
+
+// ---- Programador: panel de auditoría ----
+const vTag=(v)=>`<span class="vv ${vcls(v)}">${vic(v)} ${esc(v)}</span>`;
+T.aud={b(){Aview="flota";Asel=null;V('<div id="aud"></div>')},
+ f(){const el=$("#aud");if(!el)return;
+  if(Asel&&el.contains(document.activeElement)&&/TEXTAREA|INPUT|SELECT/.test(document.activeElement.tagName))return;
+  if(Asel){const a=D.auditorias.find(x=>x.id==Asel);if(a)return detA(el,a);Asel=null}
+  const f=Af,tabs=[["flota","Estado de flota"],["lista","Historial"],["venc","Vencimientos"]];
+  const head=`<h1>Auditoría de vehículos</h1><div class="atabs" role="tablist">${tabs.map(t=>`<button role="tab" aria-selected="${Aview==t[0]}" class="${Aview==t[0]?"on":""}" data-av="${t[0]}">${t[1]}</button>`).join("")}</div>`;
+  let body="";
+  if(Aview=="flota"){const ps=D.placas.map(p=>({p,e:ATIPO.includes(p.tipo)?estPlaca(p.placa):{key:"notipo"}}));
+    const cnt=k=>ps.filter(x=>x.e.key==k).length,pdec=ps.filter(x=>x.e.pend).length;
+    body=`<div class="kpi"><div class="k apto"><b>${cnt("apto")}</b>Aptos</div><div class="k cond"><b>${cnt("cond")}</b>Condicionados</div><div class="k no"><b>${cnt("no")}</b>No aptos</div><div class="k inc"><b>${cnt("sin")}</b>Sin chequeo</div></div>
+     ${pdec?`<div class="vban cond">${IC.warn}<div><b>${pdec} decisión(es) pendiente(s)</b><div>Chequeos con hallazgos esperando al Coordinador.</div></div></div>`:""}
+     ${ps.sort((x,y)=>(y.e.pend?1:0)-(x.e.pend?1:0)||"nosincondapto".indexOf(x.e.key)-"nosincondapto".indexOf(y.e.key)).map(({p,e})=>{const dv=docsPlaca(p.placa).filter(d=>d.dd<=30).sort((a,b)=>a.dd-b.dd);
+      return `<div class="fl ${e.key}"><div class="fh"><b>${esc(p.placa)}</b><span class="tag">${esc(p.tipo||"Sin tipo")}</span>${e.a?vTag(e.txt):e.key=="notipo"?'<span class="vv inc">Defina el tipo en Placas</span>':'<span class="vv inc">SIN CHEQUEO HOY</span>'}</div>
+       ${e.a?`<div class="mu">${esc(e.a.conductor)} · ${hm(e.a.ts)} · ${e.a.ncC} crít / ${e.a.ncM} may${e.cierre?" · cierre pendiente":""}</div>`:""}
+       ${dv.length?`<div class="chips">${dv.map(d=>`<span class="dv ${d.dd<0?"bad":"warn"}">${esc(d.k)} ${d.dd<0?"vencido":"vence en "+d.dd+" d"}</span>`).join("")}</div>`:""}
+       ${e.a?`<button class="btn s ${e.pend?"o":"d"}" data-ad="${e.a.id}">${e.pend?"Decidir":"Ver chequeo"}</button>`:""}</div>`}).join("")||'<div class="mu">Sin placas.</div>'}`}
+  else if(Aview=="lista"){const l=D.auditorias.filter(a=>(!f.placa||a.placa==f.placa)&&(!f.d1||a.fecha>=f.d1)&&(!f.d2||a.fecha<=f.d2)&&(!f.est||(a.dec||a.v)==f.est)).sort((a,b)=>b.creado-a.creado);
+    body=`<div class="card"><div class="row"><div><label for="fp">Placa</label><select id="fp"><option value="">Todas</option>${D.placas.map(p=>`<option${p.placa==f.placa?" selected":""}>${esc(p.placa)}</option>`).join("")}</select></div><div><label for="fe">Dictamen</label><select id="fe"><option value="">Todos</option>${Object.values(VER).map(v=>`<option${v==f.est?" selected":""}>${esc(v)}</option>`).join("")}</select></div></div>
+     <div class="row"><div><label for="f1">Desde</label><input type="date" id="f1" value="${f.d1}"></div><div><label for="f2">Hasta</label><input type="date" id="f2" value="${f.d2}"></div></div>
+     <button class="btn o" id="acsv">Descargar hallazgos (CSV)</button></div><p><b>${l.length} chequeo(s)</b></p>
+     ${l.map(a=>`<div class="rt"><div class="rh" data-ad="${a.id}" role="button" tabindex="0"><div><b>${esc(a.placa)}</b> <span class="mu">${esc(a.fecha)} · ${esc(a.conductor)}</span><div>${vTag(a.dec||a.v)}</div></div><span class="or">${a.ncC+a.ncM} NC</span></div></div>`).join("")||'<div class="mu">Sin resultados.</div>'}`}
+  else{const rows=[];D.placas.forEach(p=>docsPlaca(p.placa).forEach(d=>rows.push({p:p.placa,...d})));rows.sort((a,b)=>a.dd-b.dd);
+    body=`<div class="card sc"><table><tr><th>Placa</th><th>Documento</th><th>Vence</th><th>Estado</th></tr>${rows.map(d=>`<tr><td>${esc(d.p)}</td><td>${esc(d.k)}</td><td>${esc(d.f)}</td><td><span class="dv ${d.dd<0?"bad":d.dd<=30?"warn":"ok"}">${d.dd<0?"Vencido hace "+-d.dd+" d":d.dd<=30?"Vence en "+d.dd+" d":"Vigente · "+d.dd+" d"}</span></td></tr>`).join("")||'<tr><td colspan="4">Sin datos. Se alimenta de los chequeos.</td></tr>'}</table></div><div class="mu">Fechas tomadas del último chequeo de cada placa.</div>`}
+  el.innerHTML=head+body;
+  el.querySelectorAll("[data-av]").forEach(b=>b.onclick=()=>{Aview=b.dataset.av;T.aud.f()});
+  el.querySelectorAll("[data-ad]").forEach(b=>{b.onclick=()=>{Asel=b.dataset.ad;T.aud.f()};b.onkeydown=e=>{if(e.key=="Enter"||e.key==" "){e.preventDefault();b.click()}}});
+  if(Aview=="lista"){const set=()=>{Af={placa:$("#fp").value,est:$("#fe").value,d1:$("#f1").value,d2:$("#f2").value};T.aud.f()};["fp","fe","f1","f2"].forEach(i=>$("#"+i).onchange=set);$("#acsv").onclick=csvA}}};
+function csvA(){const q=s=>'"'+String(s==null?"":s).replace(/"/g,'""').replace(/\r?\n/g," ")+'"',R=[["Fecha","Placa","Tipo","Conductor","Fase","N.º","Componente","Severidad","Resultado","Observación","Fotos","Dictamen","Decisión Coordinador"]];
+  D.auditorias.filter(a=>(!Af.placa||a.placa==Af.placa)&&(!Af.d1||a.fecha>=Af.d1)&&(!Af.d2||a.fecha<=Af.d2)&&(!Af.est||(a.dec||a.v)==Af.est)).forEach(a=>["salida","cierre"].forEach(fase=>{let n=0;
+    lg(a,fase).forEach(it=>{n++;const s=store(a,fase)[it.id]||{},r=efRes(it,s);if(r=="NC")R.push([a.fecha,a.placa,a.tipo,a.conductor,fase,n,it.c,it.s,r,s.ob||"Documento vencido",nFot(s),a.v,a.dec||""])});
+    if(fase=="salida")(a.dan||[]).forEach(x=>R.push([a.fecha,a.placa,a.tipo,a.conductor,"novedad","",x.z,"",x.nuevo=="Sí"?"Daño nuevo":"Novedad",x.d,(x.f||[]).length,a.v,a.dec||""]))}));
+  dl.save({filename:"hallazgos_vehiculos_"+hoy()+".csv",data:"﻿"+R.map(r=>r.map(q).join(";")).join("\r\n")})}
+function detA(el,a){const dec=a.dec||"";
+  const secs=CHK[a.tipo].salida;let n=0;
+  const itRow=(it,fase)=>{n++;const s=store(a,fase)[it.id]||{},r=efRes(it,s);
+    return `<tr class="${r=="NC"?"rnc":""}"><td>${n}</td><td><b>${esc(it.c)}</b>${r=="NC"&&s.ob?`<div>${esc(s.ob)}</div>`:""}${(it.docs||[]).map(k=>{const d=(s.d||{})[k];return d&&d.f?`<div class="mu">${esc(k)}: ${esc(d.f)}${d.foto?` <span class="th s"><img data-ev="${esc(d.foto)}" alt="${esc(k)}"></span>`:""}</div>`:""}).join("")}${(s.f||[]).length?`<div class="th-w">${thumbs(s.f)}</div>`:""}</td><td><span class="sv sv-${SVC[it.s]}">${it.s}</span></td><td><b>${r||"—"}</b></td></tr>`};
+  el.innerHTML=`<button class="btn s d" id="adb">← Volver</button><h1 style="margin:10px 0 2px">${esc(a.placa)} · ${esc(a.tipo)}</h1><div class="mu" style="text-align:center">Chequeo ${a.num||""} · ${esc(a.fecha)} · ${esc(a.conductor)} · ${hm(a.ts)}${a.ruta?" · ruta "+esc(a.ruta):""} · ${esc(a.odo)} km</div>
+   <div class="vban ${vcls(dec||a.v)}">${vic(dec||a.v)}<div><b>${esc(dec||a.v)}</b><div>Dictamen automático: ${esc(a.v)} · ${a.ncC} crítico(s) · ${a.ncM} mayor(es)</div></div></div>
+   <div class="card"><h2>Decisión del Coordinador de Logística</h2>
+    <label for="adc">Decisión final</label><select id="adc">${Object.values(VER).map(v=>`<option${(dec||a.v)==v?" selected":""}>${esc(v)}</option>`).join("")}</select>
+    <div id="aal" class="vban no hide" style="margin:8px 0">${IC.warn}<div><b>Decisión menos restrictiva que el dictamen</b><div>Justifique por escrito; queda en la bitácora.</div></div></div>
+    <label for="acd">Condiciones / justificación / plazo de corrección</label><textarea id="acd">${esc(a.cond||"")}</textarea><div id="aer" class="em" role="alert"></div>
+    <button class="btn" id="adg">REGISTRAR DECISIÓN</button>${a.decPor?`<div class="mu">Última decisión: ${esc(a.decPor)} · ${hm(a.decTs)}</div>`:""}</div>
+   ${(a.dan||[]).length?`<div class="card"><h2>Daños y novedades</h2>${a.dan.map(x=>`<div class="chk"><div><b>${esc(x.z)}</b> · ${x.nuevo=="Sí"?"Daño nuevo":"Novedad"}<div>${esc(x.d)}</div><div class="th-w">${thumbs(x.f)}</div></div></div>`).join("")}</div>`:""}
+   <div class="card sc"><h2>Chequeo de salida</h2><table><tr><th>#</th><th>Componente / evidencia</th><th>Sev.</th><th>Res.</th></tr>${(n=0,secs.map(sec=>`<tr><th colspan="4">${esc(sec.t)}</th></tr>`+sec.i.map(it=>itRow(it,"salida")).join("")).join(""))}</table></div>
+   ${a.odoF?`<div class="card"><h2>Odómetro de salida</h2><div class="th-w">${thumbs([{p:a.odoF,ts:a.odoTs||a.creado}])}</div></div>`:""}
+   ${a.cie?`<div class="card sc"><h2>Cierre de jornada · ${hm(a.cie.ts)}</h2><div class="mu">${esc(a.cie.odo)} km (${a.cie.odo-a.odo} recorridos) · ${esc(a.cie.gal)} gal${+a.cie.gal>0?" · "+((a.cie.odo-a.odo)/a.cie.gal).toFixed(1)+" km/gal":""} · tiquete ${esc(a.cie.tiq)}</div><div class="th-w">${thumbs([{p:a.cie.foto,ts:a.cie.ts}])}</div><table>${(n=0,CHK[a.tipo].cierre.map(it=>itRow(it,"cierre")).join(""))}</table></div>`:'<div class="card"><h2>Cierre de jornada</h2><div class="mu">Pendiente.</div></div>'}
+   <div class="card"><h2>Firma del conductor</h2><img class="f" alt="Firma" src="${a.firma||""}" style="background:#fff"></div>
+   <button class="btn o" onclick="window.print()">Imprimir / guardar PDF</button>`;
+  hydrate(el);$("#adb").onclick=()=>{Asel=null;T.aud.f()};
+  const al=()=>$("#aal").classList.toggle("hide",!(RK[$("#adc").value]<RK[a.v]));$("#adc").onchange=al;al();
+  $("#adg").onclick=async()=>{const d=$("#adc").value,c=$("#acd").value.trim(),menos=RK[d]<RK[a.v];
+    if((menos||d!=VER.ok)&&!c){$("#aer").textContent=menos?"Justifique por qué la decisión es menos restrictiva que el dictamen.":"Indique las condiciones o el motivo.";return}
+    $("#aer").textContent="";const b=$("#adg");b.disabled=true;
+    try{await S.auditorias.save(Object.assign(clone(a),{dec:d,cond:c,decPor:U.nombre,decTs:new Date().toISOString()}));await logE("Decisión chequeo",`${a.placa} · ${d}${menos?" · MENOS RESTRICTIVA QUE EL DICTAMEN":""} · ${c}`);Asel=null;T.aud.f()}catch(e){err(e)}finally{b.disabled=false}}}
+
+// ---- placas: tipo de vehículo ----
+T.pla={b(){V(`<div class="card"><h2>Placas</h2><label for="pn">Placa</label><input id="pn" placeholder="ZNL256"><label for="pt">Tipo de vehículo (define el formato de chequeo)</label><select id="pt">${ATIPO.map(t=>`<option>${t}</option>`).join("")}</select><button class="btn" id="padd">Agregar placa</button></div><div class="card" id="pl"></div>`);
+ $("#padd").onclick=async()=>{const n=$("#pn").value.trim().toUpperCase();if(!n)return;if(D.placas.some(p=>p.placa==n)){alert("Esa placa ya existe.");return}
+  try{await S.placas.save({id:"p"+Date.now(),placa:n,tipo:$("#pt").value,creado:Date.now()});$("#pn").value=""}catch(e){err(e)}}},
+ f(){$("#pl").innerHTML=D.placas.map(p=>`<div class="chk"><b>${esc(p.placa)}</b><select data-pt="${p.id}" aria-label="Tipo de vehículo de ${esc(p.placa)}" style="width:auto;margin-left:8px">${p.tipo?"":'<option value="">Definir tipo…</option>'}${ATIPO.map(t=>`<option${p.tipo==t?" selected":""}>${t}</option>`).join("")}</select><button class="btn s r" style="margin-left:auto" data-dp="${p.id}">Eliminar</button></div>`).join("")||'<div class="mu">Sin placas.</div>';
+  document.querySelectorAll("[data-dp]").forEach(b=>b.onclick=()=>S.placas.del(b.dataset.dp));
+  document.querySelectorAll("[data-pt]").forEach(s=>s.onchange=async()=>{const p=D.placas.find(x=>x.id==s.dataset.pt);if(p&&s.value)try{await S.placas.save(Object.assign(clone(p),{tipo:s.value}))}catch(e){err(e)}})}};
+
 init();
 </script></body></html>
